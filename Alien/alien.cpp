@@ -1,19 +1,44 @@
 #include "alien.h"
 
-Alien::Alien( int y, int x ){
+Alien::Alien( float y, float x ){
 
   XL = x;
   XR = x + LENGHT;
 
   Y = y;
 
-  direction = 1;
+  Counter = 0;
+  direction = 0.3;
 }
 
-int Alien::UpdatePosition( int next_x, int max_x ){
+void Alien::UpdatePosition( float max_x ){
 
 
-  PrintAlien( Y, XL );
+  float N = 4;
+  float M = 2;
+  
+  mat aliens( M, vec( N ) );
+
+  aliens[1][1] = 1;
+
+  float next_x;
+
+  for ( float j=0; j<M; j++ ){
+    for ( float i=0; i<N; i++ ){
+
+      if ( aliens[j][i]==1 && Counter != 0 ){
+
+        PrintWhiteSpace( Y + HEIGHT*j, XL + LENGHT*i );
+      }
+
+      else {
+
+        PrintAlien( Y + HEIGHT*j, XL + LENGHT*i );
+      }
+    }
+  }
+
+  refresh();
 
   usleep( DELAY );
 
@@ -21,11 +46,12 @@ int Alien::UpdatePosition( int next_x, int max_x ){
 
     next_x = XR + direction;
 
-    if( next_x  >= max_x ){
+    if( next_x  >= max_x - (N-1)*LENGHT ){
 
       direction += 0.3;
       direction *=-1;
       Y++;
+      Counter++;
     }
 
     else{
@@ -54,12 +80,26 @@ int Alien::UpdatePosition( int next_x, int max_x ){
   }
 }
 
-void Alien::PrintAlien( int y, int x ){
+void Alien::PrintAlien( float y, float x ){
 
   mvprintw( y+0, x, ALIENH1 );
   mvprintw( y+1, x, ALIENH2 );
   mvprintw( y+2, x, ALIENH3 );
   mvprintw( y+3, x, ALIENH4 );
+}
+
+void Alien::PrintWhiteSpace( float y, float x ){
+
+  mvprintw( y+0, x, DALIEN1 );
+  mvprintw( y+1, x, DALIEN1 );
+  mvprintw( y+2, x, DALIEN1 );
+  mvprintw( y+3, x, DALIEN1 );
 
   refresh();
+
+  mvprintw( y+0, x, DALIEN2 );
+  mvprintw( y+1, x, DALIEN2 );
+  mvprintw( y+2, x, DALIEN2 );
+  mvprintw( y+3, x, DALIEN2 );
+  
 }

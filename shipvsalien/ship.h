@@ -7,7 +7,7 @@ using namespace std;
 class Ship{
   
   public:
-    Ship( int, int );
+    Ship( float, float );
     void print();
     void move( int );
     void shoot();

@@ -1,44 +1,35 @@
 #include "alien.h"
 
-Alien::Alien( int y, int x ){
+Aliens::Aliens( float y, float x, int n, int m ){
 
   XL = x;
   XR = x + LENGHT;
 
   Y = y;
 
-  Counter = 0;
-  direction = 1;
+  direction = 0.3;
+  
+  N = n; //Number of columns
+  M = m; //Number of rows
+  
+  mat AliensStatus( M, vec( N ) );
+  
 }
 
-void Alien::UpdatePosition( int max_x ){
+void Aliens::UpdatePosition( float max_x ){
 
 
-  int N = 4;
-  int M = 2;
-  
-  mat aliens( M, vec( N ) );
 
-  aliens[1][1] = 1;
+  float next_x;
 
-  int next_x;
-
-  for ( int j=0; j<M; j++ ){
-    for ( int i=0; i<N; i++ ){
-
-      if ( aliens[j][i]==1 && Counter != 0 ){
-
-        PrintWhiteSpace( Y + HEIGHT*j, XL + LENGHT*i );
-      }
-
-      else {
+  for ( float j=0; j<M; j++ ){
+    for ( float i=0; i<N; i++ ){
 
         PrintAlien( Y + HEIGHT*j, XL + LENGHT*i );
-      }
+    
     }
   }
 
- // refresh();
 
   usleep( DELAY );
 
@@ -48,10 +39,8 @@ void Alien::UpdatePosition( int max_x ){
 
     if( next_x  >= max_x - (N-1)*LENGHT ){
 
-      direction += 0.3;
       direction *=-1;
       Y++;
-      Counter++;
     }
 
     else{
@@ -67,7 +56,6 @@ void Alien::UpdatePosition( int max_x ){
 
     if( next_x < 0 ){
 
-      direction -= 0.7;
       direction *= -1;
       Y++;
     }
@@ -80,7 +68,7 @@ void Alien::UpdatePosition( int max_x ){
   }
 }
 
-void Alien::PrintAlien( int y, int x ){
+void Aliens::PrintAlien( float y, float x ){
 
   mvprintw( y+0, x, ALIENH1 );
   mvprintw( y+1, x, ALIENH2 );
@@ -88,18 +76,10 @@ void Alien::PrintAlien( int y, int x ){
   mvprintw( y+3, x, ALIENH4 );
 }
 
-void Alien::PrintWhiteSpace( int y, int x ){
+void Aliens::PrintWhiteSpace( float y, float x ){
 
-//   mvprintw( y+0, x, DALIEN1 );
-//   mvprintw( y+1, x, DALIEN1 );
-//   mvprintw( y+2, x, DALIEN1 );
-//   mvprintw( y+3, x, DALIEN1 );
-// 
-//   refresh();
-
-  mvprintw( y+0, x, DALIEN2 );
-  mvprintw( y+1, x, DALIEN2 );
-  mvprintw( y+2, x, DALIEN2 );
-  mvprintw( y+3, x, DALIEN2 );
-  
+  mvprintw( y+0, x, DALIEN1 );
+  mvprintw( y+1, x, DALIEN1 );
+  mvprintw( y+2, x, DALIEN1 );
+  mvprintw( y+3, x, DALIEN1 );
 }

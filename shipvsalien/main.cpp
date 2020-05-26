@@ -9,10 +9,9 @@ using namespace std;
 
 int main(){
   
-  int max_y = 0, max_x = 0;
+  float max_y = 0, max_x = 0;
   int ch;
   
-  Alien A1( 0, 0 );
   initscr();
   noecho();
   curs_set(FALSE);
@@ -23,6 +22,7 @@ int main(){
   
   getmaxyx(stdscr, max_y, max_x);
   
+  Aliens A1( 0., 0., 3, 4 );   
   Ship ship( max_y, max_x );
   
 

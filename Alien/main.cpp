@@ -1,14 +1,22 @@
 
 #include "alien.h"
+#include <vector>
+
+using namespace std;
 
 int main(int argc, char *argv[]) {
 
+  vector< class Alien > VA;
 
-  int max_y = 0, max_x = 0;
+  float max_x = 0, max_y = 0;
 
-  int next_x = 0;
+  float N = 2; //Number of aliens
 
   Alien A1( 0, 0 );
+  Alien A2( 0, LENGHT );
+
+  VA.push_back( A1 );
+  VA.push_back( A2 );
 
   initscr();
 
@@ -23,10 +31,18 @@ int main(int argc, char *argv[]) {
   while(1) {
     clear();
 
-    next_x = A1.UpdatePosition( next_x, max_x);
+    A1.UpdatePosition( max_x );
+    //getch();
   }
 
   endwin();
 }
+
+
+
+
+
+
+
 
 

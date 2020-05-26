@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Ship::Ship( int maxy, int maxx ){
+Ship::Ship( float maxy, float maxx ){
   
   max_x = maxx;
   max_y = maxy;

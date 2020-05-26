@@ -6,8 +6,8 @@
 #define ALIENH2 " ___/   \\___ "
 #define ALIENH3 "/   '---'   \\"
 #define ALIENH4 "'--_______--' "
-#define DALIEN1 "**************"
-#define DALIEN2 "              "
+
+#define DALIEN1 "              "
 
 #define LENGHT 14
 #define HEIGHT 4
@@ -19,23 +19,26 @@ using namespace std;
 typedef vector< double > vec;
 typedef vector< vec > mat;
 
-class Alien{
+class Aliens{
 
  public:
 
   //Initialize alient with uppper y and left x
-  Alien( int, int );
+  Aliens( float, float, int, int );
+  //~Aliens( );
 
-  void GetXPosition( int * );
-  void UpdatePosition( int );
+  //void GetXPosition( float* );
+  void UpdatePosition( float );
 
-  void PrintAlien( int, int );
-  void PrintWhiteSpace( int, int );
+  void PrintAlien( float, float );
+  void PrintWhiteSpace( float, float );
 
  private:
 
-  int XL, XR; //Horizontal positions: Left and Right
-  int Y; //Vertical position of upper part
-  int direction;
-  int Counter;
+  float XL, XR; //Horizontal positions: Left and Right
+  float Y; //Vertical position of upper part
+  float direction;
+  mat AliensStatus;
+  
+  int N, M;
 };
