@@ -12,17 +12,18 @@
 
 #define DALIEN1 "              "
 
-#define LENGHT 14
+#define LENGTH 14
 #define HEIGHT 4
 
 #define DELAY 30000
 
 using namespace std;
 
-typedef vector< double > vec;
+typedef vector< int > vec;
 typedef vector< vec > mat;
 
 class Aliens{
+ friend class Game;
 
  public:
 

@@ -1,10 +1,13 @@
+#include <iostream>
+
 #include "alien.h"
 
+using namespace std;
 
 Aliens::Aliens( float y, float x, int n, int m ){
   
   XL = x;
-  XR = x + LENGHT;
+  XR = x + LENGTH;
   
   Y = y;
   
@@ -13,7 +16,9 @@ Aliens::Aliens( float y, float x, int n, int m ){
   N = n; //Number of columns
   M = m; //Number of rows
   
-  mat AliensStatus( M, vec( N ) );
+  mat AliensStatus_init( M, vec( N, 1 ) );
+  AliensStatus = AliensStatus_init;
+  
 }
 
 void Aliens::UpdatePosition( float max_x ){
@@ -23,7 +28,10 @@ void Aliens::UpdatePosition( float max_x ){
   for ( float j=0; j<M; j++ ){
     for ( float i=0; i<N; i++ ){
         
-        PrintAlien( Y + HEIGHT*j, XL + LENGHT*i );
+        
+        if ( AliensStatus[i][j] == 1 ) PrintAlien( Y + HEIGHT*j, XL + LENGTH*i );
+        
+        else PrintWhiteSpace( Y + HEIGHT*j, XL + LENGTH*i );
     
     }
   }
@@ -34,7 +42,7 @@ void Aliens::UpdatePosition( float max_x ){
     
     next_x = XR + direction;
     
-    if( next_x  >= max_x - (N-1)*LENGHT ){
+    if( next_x  >= max_x - (N-1)*LENGTH ){
       
       direction *=-1;
       Y++;
