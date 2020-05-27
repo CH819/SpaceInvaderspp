@@ -28,8 +28,7 @@ void Aliens::UpdatePosition( float max_x ){
   for ( float j=0; j<M; j++ ){
     for ( float i=0; i<N; i++ ){
         
-        
-        if ( AliensStatus[i][j] == 1 ) PrintAlien( Y + HEIGHT*j, XL + LENGTH*i );
+        if ( AliensStatus[j][i] == 1 ) PrintAlien( Y + HEIGHT*j, XL + LENGTH*i );
         
         else PrintWhiteSpace( Y + HEIGHT*j, XL + LENGTH*i );
     

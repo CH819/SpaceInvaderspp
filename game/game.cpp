@@ -22,11 +22,11 @@ void Game::start(){
   //raw();
   cbreak();
   keypad( stdscr, true );
-  nodelay(stdscr, 1);  
+  nodelay(stdscr, 1);
   
   getmaxyx(stdscr, max_y, max_x);
   
-  Aliens A1( 0., 0., 3, 3 );
+  Aliens A1( 0., 0., 4, 3 );
   Ship ship( max_y, max_x );
   
   
@@ -53,12 +53,12 @@ void Game::start(){
       xindex = (project[i].x - A1.XL)/LENGTH;
       yindex = (project[i].y - A1.Y)/HEIGHT;
       
-      if ( yindex >= 0 && yindex < A1.N ){
-        if ( xindex >= 0 && xindex < A1.M ){
+      if ( yindex >= 0 && yindex < A1.M ){
+        if ( xindex >= 0 && xindex < A1.N ){
           
-          if ( A1.AliensStatus[xindex][yindex] == 1 ){
+          if ( A1.AliensStatus[yindex][xindex] == 1 ){
             
-            A1.AliensStatus[xindex][yindex] = 0;
+            A1.AliensStatus[yindex][xindex] = 0;
             project.erase( project.begin() + i );
           }
         }
