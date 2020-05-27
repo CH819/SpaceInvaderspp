@@ -9,16 +9,17 @@ using namespace std;
 
 class Projectile{
   
+  friend class Game;
+  
   public:
     Projectile( int, int );
     void print();
     void move();
-    int y, x;
   
   private:
     int direction = 1;
     int max_y;
-    //int y, x;
+    int y, x;
 };
 
 #endif

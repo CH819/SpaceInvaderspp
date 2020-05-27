@@ -8,7 +8,7 @@ using namespace std;
 Projectile::Projectile( int y_coor, int x_coor ){
   
   x = x_coor;
-  y = y_coor - 4;
+  y = y_coor - 2;
 }
 
 
@@ -16,7 +16,6 @@ void Projectile::print(){
   
   mvprintw(y, x, "*");
   mvprintw(y+1, x, "*");
-  mvprintw(y+2, x, "*");
   
   //refresh();
 }

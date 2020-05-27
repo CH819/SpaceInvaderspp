@@ -15,7 +15,6 @@ class Game{
   public:
     Game( int );
     void start();
-    void hola();
     
     
   private:

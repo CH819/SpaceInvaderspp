@@ -11,14 +11,10 @@ Game::Game( int h ){
   
 }
 
-void Game::hola(){
-  cout << "hola" << endl;
-}
-
 void Game::start(){
   
   float max_y = 0, max_x = 0;
-  int ch;
+  int ch, xindex, yindex;
   
   initscr();
   noecho();
@@ -30,8 +26,9 @@ void Game::start(){
   
   getmaxyx(stdscr, max_y, max_x);
   
-  Aliens A1( 0., 0., 3, 4 );
+  Aliens A1( 0., 0., 3, 3 );
   Ship ship( max_y, max_x );
+  
   
   while(1) {
     
@@ -48,8 +45,24 @@ void Game::start(){
       project[i].print();
       project[i].move();
       
-      if (project[i].y <= 0 ) project.erase( project.begin() + i );
+      if (project[i].y <= 0 ){
+          project.erase( project.begin() + i );
+          break;
+      }
       
+      xindex = (project[i].x - A1.XL)/LENGTH;
+      yindex = (project[i].y - A1.Y)/HEIGHT;
+      
+      if ( yindex >= 0 && yindex <= A1.N ){
+        if ( xindex >= 0 && xindex <= A1.M ){
+          
+          if ( A1.AliensStatus[xindex][yindex] == 1 ){
+            
+            A1.AliensStatus[xindex][yindex] = 0;
+            project.erase( project.begin() + i );
+          }
+        }
+      }
     }
     
     refresh();
