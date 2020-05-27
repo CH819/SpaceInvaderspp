@@ -53,8 +53,8 @@ void Game::start(){
       xindex = (project[i].x - A1.XL)/LENGTH;
       yindex = (project[i].y - A1.Y)/HEIGHT;
       
-      if ( yindex >= 0 && yindex <= A1.N ){
-        if ( xindex >= 0 && xindex <= A1.M ){
+      if ( yindex >= 0 && yindex < A1.N ){
+        if ( xindex >= 0 && xindex < A1.M ){
           
           if ( A1.AliensStatus[xindex][yindex] == 1 ){
             
