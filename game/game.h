@@ -1,21 +1,25 @@
+#include <iostream>
 #include <unistd.h>
 #include <ncurses.h>
 #include <vector>
 
+#include "projectile.h"
 #include "ship.h"
 #include "alien.h"
-#include "projectile.h"
 
 using namespace std;
 
+typedef vector< Projectile > proj_vec;
+
 class Game{
   public:
+    Game( int );
     void start();
+    void hola();
     
     
   private:
-    
-    
+    proj_vec project;
     
 };
 

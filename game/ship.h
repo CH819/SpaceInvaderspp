@@ -4,16 +4,20 @@
 #include <iostream>
 #include <ncurses.h>
 #include <unistd.h>
+#include <vector>
+
+#include "projectile.h"
 
 using namespace std;
+
+typedef vector< Projectile > proj_vec;
 
 class Ship{
   
   public:
     Ship( float, float );
     void print();
-    void move( int );
-    void shoot();
+    void action( int, proj_vec& );
   
   private:
     int direction = 1;

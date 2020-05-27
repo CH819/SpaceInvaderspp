@@ -1,8 +1,19 @@
-#include "game.h"
+#include <iostream>
+
+#include "projectile.h"
 #include "ship.h"
 #include "alien.h"
-#include "projectile.h"
+#include "game.h"
 
+using namespace std;
+
+Game::Game( int h ){
+  
+}
+
+void Game::hola(){
+  cout << "hola" << endl;
+}
 
 void Game::start(){
   
@@ -31,7 +42,15 @@ void Game::start(){
     ship.print();
     
     ch = getch();
-    ship.move( ch );
+    ship.action( ch, project );
+    
+    for ( int i=0; i<project.size(); i++){
+      project[i].print();
+      project[i].move();
+      
+      if (project[i].y <= 0 ) project.erase( project.begin() + i );
+      
+    }
     
     refresh();
     

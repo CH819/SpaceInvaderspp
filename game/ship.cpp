@@ -1,6 +1,8 @@
 #include <iostream>
 #include <ncurses.h>
 #include <unistd.h>
+
+#include "projectile.h"
 #include "ship.h"
 
 using namespace std;
@@ -25,7 +27,7 @@ void Ship::print(  ){
 }
 
 
-void Ship::move( int ch ){
+void Ship::action( int ch, proj_vec& project ){
   
   switch( ch ){
     
@@ -38,6 +40,11 @@ void Ship::move( int ch ){
       break;
     
     case KEY_UP:
+      if (project.size() < 3){
+        Projectile proj( y, x );
+        project.push_back( proj );
+      }
+      
       break;
     
   }
