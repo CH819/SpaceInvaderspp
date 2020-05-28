@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 #include "projectile.h"
 #include "ship.h"
@@ -302,8 +303,8 @@ void Game::Play(){
           break;
       }
       
-      xindex = (project[i].x - A1.XL)/LENGTH;
-      yindex = (project[i].y - A1.Y)/HEIGHT;
+      xindex = floor((project[i].x - A1.XL)/LENGTH);
+      yindex = floor((project[i].y - A1.Y)/HEIGHT);
       
       if ( yindex >= 0 && yindex < A1.M ){
         if ( xindex >= 0 && xindex < A1.N ){
