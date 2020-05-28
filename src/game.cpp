@@ -138,7 +138,6 @@ void Game::ShowMenu(){
     }
   }
   
-  getch();
   endwin();
 }
 
