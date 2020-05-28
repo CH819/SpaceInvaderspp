@@ -28,7 +28,7 @@ class Aliens{
  public:
 
   //Initialize alient with uppper y and left x
-  Aliens( float, float, int, int );
+  Aliens( float, float, int, int, float, WINDOW * );
   //~Aliens( );
 
   //void GetXPosition( float* );
@@ -36,6 +36,9 @@ class Aliens{
 
   void PrintAlien( float, float );
   void PrintWhiteSpace( float, float );
+  
+  void CheckAliensL();
+  void CheckAliensR();
 
  private:
 
@@ -44,7 +47,9 @@ class Aliens{
   float direction;
   mat AliensStatus;
   
-  int N, M;
+  WINDOW * gamewin;
+  
+  int N, M, LimL, LimR;
 };
 
 #endif

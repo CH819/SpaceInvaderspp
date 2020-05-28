@@ -5,17 +5,18 @@
 
 using namespace std;
 
-Projectile::Projectile( int y_coor, int x_coor ){
+Projectile::Projectile( int y_coor, int x_coor, WINDOW * win ){
   
   x = x_coor;
   y = y_coor - 2;
+  gamewin = win;
 }
 
 
 void Projectile::print(){
   
-  mvprintw(y, x, "*");
-  mvprintw(y+1, x, "*");
+  mvwprintw( gamewin, y, x, "*" );
+  mvwprintw( gamewin, y+1, x, "*" );
   
   //refresh();
 }

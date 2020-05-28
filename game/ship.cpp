@@ -7,21 +7,22 @@
 
 using namespace std;
 
-Ship::Ship( float maxy, float maxx ){
+Ship::Ship( float maxy, float maxx, WINDOW * win ){
   
   max_x = maxx;
   max_y = maxy;
   x = max_x/2;
   y = max_y - 5;
+  gamewin = win;
 }
 
 
 void Ship::print(  ){
   
-  mvprintw(y, x, "o");
-  mvprintw(y+1, x-2, "ooooo");
-  mvprintw(y+2, x-3, "ooooooo");
-  mvprintw(y+3, x-3, " o   o ");
+  mvwprintw( gamewin, y, x, "o");
+  mvwprintw( gamewin, y+1, x-2, "ooooo");
+  mvwprintw( gamewin, y+2, x-3, "ooooooo");
+  mvwprintw( gamewin, y+3, x-3, " o   o ");
   
   //refresh();
 }
@@ -41,7 +42,7 @@ void Ship::action( int ch, proj_vec& project ){
     
     case KEY_UP:
       if (project.size() < 3){
-        Projectile proj( y, x );
+        Projectile proj( y, x, gamewin );
         project.push_back( proj );
       }
       

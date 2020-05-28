@@ -12,7 +12,7 @@ class Projectile{
   friend class Game;
   
   public:
-    Projectile( int, int );
+    Projectile( int, int, WINDOW * );
     void print();
     void move();
   
@@ -20,6 +20,7 @@ class Projectile{
     int direction = 1;
     int max_y;
     int y, x;
+    WINDOW * gamewin;
 };
 
 #endif

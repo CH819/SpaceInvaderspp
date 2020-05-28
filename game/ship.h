@@ -15,7 +15,7 @@ typedef vector< Projectile > proj_vec;
 class Ship{
   
   public:
-    Ship( float, float );
+    Ship( float, float, WINDOW * );
     void print();
     void action( int, proj_vec& );
   
@@ -24,6 +24,8 @@ class Ship{
     int max_y;
     int max_x;
     int y, x;
+    
+    WINDOW * gamewin;
 };
 
 #endif

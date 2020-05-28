@@ -4,17 +4,23 @@
 
 using namespace std;
 
-Aliens::Aliens( float y, float x, int n, int m ){
+Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   
   XL = x;
   XR = x + LENGTH;
   
   Y = y;
   
-  direction = 0.3;
+  direction = dir;
   
   N = n; //Number of columns
   M = m; //Number of rows
+  
+  LimL = 0;
+  LimR = N;
+
+  
+  gamewin = win;
   
   mat AliensStatus_init( M, vec( N, 1 ) );
   AliensStatus = AliensStatus_init;
@@ -41,7 +47,7 @@ void Aliens::UpdatePosition( float max_x ){
     
     next_x = XR + direction;
     
-    if( next_x  >= max_x - (N-1)*LENGTH ){
+    if( next_x  >= max_x - (LimR-1)*LENGTH  ){
       
       direction *=-1;
       Y++;
@@ -58,7 +64,7 @@ void Aliens::UpdatePosition( float max_x ){
     
     next_x = XL + direction;
     
-    if( next_x < 0 ){
+    if( next_x < LimL*LENGTH ){
       
       direction *= -1;
       Y++;
@@ -72,18 +78,41 @@ void Aliens::UpdatePosition( float max_x ){
   }
 }
 
+void Aliens::CheckAliensL(){
+  
+  int counter = 0;
+  for( int i=0; i<M; i++ ){
+    
+
+    if ( AliensStatus[i][-LimL] == 1 ) counter++;
+  }
+  
+  if ( counter == 0 ) LimL--;
+  
+}
+
+void Aliens::CheckAliensR(){
+  
+  for( int i=0; i<M; i++ ){
+    
+    if ( AliensStatus[i][LimR-1] == 1 ) return;
+  }
+  
+  LimR--;
+}
+
 void Aliens::PrintAlien( float y, float x ){
 
-  mvprintw( y+0, x, ALIENH1 );
-  mvprintw( y+1, x, ALIENH2 );
-  mvprintw( y+2, x, ALIENH3 );
-  mvprintw( y+3, x, ALIENH4 );
+  mvwprintw( gamewin, y+0, x, ALIENH1 );
+  mvwprintw( gamewin, y+1, x, ALIENH2 );
+  mvwprintw( gamewin, y+2, x, ALIENH3 );
+  mvwprintw( gamewin, y+3, x, ALIENH4 );
 }
 
 void Aliens::PrintWhiteSpace( float y, float x ){
 
-  mvprintw( y+0, x, DALIEN1 );
-  mvprintw( y+1, x, DALIEN1 );
-  mvprintw( y+2, x, DALIEN1 );
-  mvprintw( y+3, x, DALIEN1 );
+  mvwprintw( gamewin, y+0, x, DALIEN1 );
+  mvwprintw( gamewin, y+1, x, DALIEN1 );
+  mvwprintw( gamewin, y+2, x, DALIEN1 );
+  mvwprintw( gamewin, y+3, x, DALIEN1 );
 }
