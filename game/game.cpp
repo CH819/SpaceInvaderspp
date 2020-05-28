@@ -18,6 +18,7 @@ void Game::ShowMenu(){
   noecho();
   cbreak();
   curs_set(0);
+  nodelay( stdscr, 0 );
 
 
   int y_max, x_max;
@@ -118,7 +119,7 @@ void Game::ShowMenu(){
     }
   }
   
-  //getch();
+  getch();
   endwin();
 }
 
@@ -231,7 +232,7 @@ float Game::SetDifficulty(){
 void Game::start(){
   
   float max_y = 0, max_x = 0;
-  int ch, xindex, yindex;
+  int ch, xindex, yindex, w;
   
   curs_set(FALSE);
   //raw();
@@ -244,13 +245,42 @@ void Game::start(){
   Aliens A1( 0., 0., 10, 4, speed, gamewin );
   Ship ship( max_y, max_x, gamewin );
   
+  string lost = "YOU DIED!";
+  string won = "YOU WON!";
   
   while(1) {
     
     //getmaxyx(stdscr, max_y, max_x);
     werase( gamewin );
     
-    A1.UpdatePosition( max_x );
+    w = A1.UpdatePosition( max_y, max_x );
+    
+    switch( w ){
+      
+     case 0:
+      break;
+      
+     case 1:
+      clear();
+       
+      mvprintw( max_y/2, max_x/2, lost.c_str() );
+      refresh();
+      usleep( 2000000 );
+      
+      ShowMenu();
+      break;
+    
+     case 2:
+      clear();
+       
+      mvprintw( max_y/2, max_x/2, won.c_str() );
+      refresh();
+      usleep( 2000000 );
+      
+      ShowMenu();
+      return;
+    }
+    
     ship.print();
     
     ch = getch();
@@ -284,15 +314,19 @@ void Game::start(){
     
     A1.CheckAliensL();
     A1.CheckAliensR();
+    A1.CheckAliensB();
     
     wrefresh( gamewin );
     
     if ( ch == KEY_F(1) ) break;
     
+  
   }
   
-  endwin();
+  //endwin();
+  nodelay( stdscr, 0 );
   
+  return;
 }
 
 void Game::PrintInitAlien( int x ){

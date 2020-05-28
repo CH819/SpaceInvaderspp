@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "alien.h"
-
+#include <fstream>
 using namespace std;
 
 Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
@@ -18,6 +18,7 @@ Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   
   LimL = 0;
   LimR = N;
+  LimB = M;
 
   
   gamewin = win;
@@ -25,12 +26,18 @@ Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   mat AliensStatus_init( M, vec( N, 1 ) );
   AliensStatus = AliensStatus_init;
   
+  
+  outfile.open("bottom.txt");
+  
 }
 
-void Aliens::UpdatePosition( float max_x ){
+int Aliens::UpdatePosition( float max_y, float max_x ){
   
   float next_x;
   
+
+  if ( LimB == 0 ) return 2;
+    
   for ( float j=0; j<M; j++ ){
     for ( float i=0; i<N; i++ ){
         
@@ -51,6 +58,8 @@ void Aliens::UpdatePosition( float max_x ){
       
       direction *=-1;
       Y++;
+      
+      if( Y + LimB*HEIGHT >= max_y - 4) return 1;
     }
     
     else{
@@ -68,6 +77,8 @@ void Aliens::UpdatePosition( float max_x ){
       
       direction *= -1;
       Y++;
+      
+      if( Y + LimB*HEIGHT >= max_y - 4) return 1;
     }
     
     else{
@@ -76,20 +87,24 @@ void Aliens::UpdatePosition( float max_x ){
       XL += direction;
     }
   }
+  
+
+  
+  return 0;
 }
 
 void Aliens::CheckAliensL(){
   
-  int counter = 0;
   for( int i=0; i<M; i++ ){
     
 
-    if ( AliensStatus[i][-LimL] == 1 ) counter++;
+    if ( AliensStatus[i][-LimL] == 1 ) return;
   }
   
-  if ( counter == 0 ) LimL--;
+  LimL--;
   
 }
+
 
 void Aliens::CheckAliensR(){
   
@@ -100,6 +115,20 @@ void Aliens::CheckAliensR(){
   
   LimR--;
 }
+
+void Aliens::CheckAliensB(){
+  
+  for( int i=0; i<N; i++ ){
+    
+
+    if ( AliensStatus[LimB-1][i] == 1 ) return;;
+  }
+  
+  LimB--;
+  outfile << LimB << endl;
+  
+}
+
 
 void Aliens::PrintAlien( float y, float x ){
 

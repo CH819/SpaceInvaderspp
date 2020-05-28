@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include <vector>
+#include <fstream>
 
 #define ALIENH1 "     ___      "
 #define ALIENH2 " ___/   \\___ "
@@ -32,13 +33,14 @@ class Aliens{
   //~Aliens( );
 
   //void GetXPosition( float* );
-  void UpdatePosition( float );
+  int UpdatePosition( float, float );
 
   void PrintAlien( float, float );
   void PrintWhiteSpace( float, float );
   
-  void CheckAliensL();
-  void CheckAliensR();
+  void CheckAliensL(); //Left
+  void CheckAliensR(); //Right
+  void CheckAliensB(); //Bottom
 
  private:
 
@@ -49,7 +51,9 @@ class Aliens{
   
   WINDOW * gamewin;
   
-  int N, M, LimL, LimR;
+  int N, M, LimL, LimR, LimB;
+  
+  ofstream outfile;
 };
 
 #endif
