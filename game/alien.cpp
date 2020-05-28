@@ -70,7 +70,7 @@ int Aliens::UpdatePosition( float max_y, float max_x ){
     
     next_x = XL + direction;
     
-    if( next_x < LimL*LENGTH ){
+    if( next_x < LimL*LENGTH + 1){
       
       direction *= -1;
       Y++;

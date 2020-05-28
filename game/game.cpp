@@ -244,10 +244,10 @@ float Game::SetDifficulty(){
 
 void Game::Play(){
   
-  
+  wclear( menuwin );
   int ch, xindex, yindex, w;
   
-  Aliens A1( 0., 0., 10, 4, speed, gamewin );
+  Aliens A1( 1., 1., 10, 4, speed, gamewin );
   Ship ship( yMaxGame, xMaxGame, gamewin );
   
   
@@ -256,6 +256,7 @@ void Game::Play(){
     werase( gamewin );
     
     w = A1.UpdatePosition( yMaxGame, xMaxGame );
+    box( gamewin, 0, 0 );
     
     switch( w ){
       
@@ -284,11 +285,11 @@ void Game::Play(){
     }
     
     ship.print();
-    
+        
     ch = wgetch( gamewin );
     ship.action( ch, project );
-    
-    box( gamewin, 0, 0 );
+    //box( gamewin, 0, 0 );
+
     
     for ( int i=0; i<project.size(); i++){
       
