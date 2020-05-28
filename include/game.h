@@ -49,11 +49,15 @@ class Game{
     
     WINDOW * menuwin;
     WINDOW * gamewin;
+    WINDOW * infowin;
     
     float speed;
     
     int yMaxSTD,  xMaxSTD;   //Max Coordinates for Std Screen
     int yMaxMenu, xMaxMenu; //For Menu Screen
+    int yMaxInfo, xMaxInfo; //For Info Screen
     float yMaxGame, xMaxGame; //For Game Screen
+    
+    int Score = 0;
 };
 

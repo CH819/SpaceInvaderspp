@@ -23,21 +23,26 @@ void Game::Start(){
   curs_set(0);
   nodelay( stdscr, 0 );
   curs_set(FALSE);
-  //keypad( stdscr, true );
   
   int height = 6;
   int width = 30;
 
   getmaxyx( stdscr, yMaxSTD,  xMaxSTD );
 
+  //Setting up Menu Window
   menuwin = newwin( height, width, yMaxSTD/2 , (xMaxSTD - width)/2 );
   keypad( menuwin, true );
    
-   
+  //Setting up Game Window 
   gamewin = newwin( yMaxSTD - 2, xMaxSTD, 0, 0 );
   keypad( gamewin, true );
   nodelay( gamewin, 1 );
   getmaxyx( gamewin, yMaxGame,  xMaxGame );
+  
+  //Setting up Info Window
+  infowin = newwin( 3, xMaxSTD, yMaxSTD - 3, 0 );
+  getmaxyx( infowin, yMaxInfo,  xMaxInfo );
+  
   
   ShowMenu();
 }
@@ -243,6 +248,7 @@ float Game::SetDifficulty(){
   return 0.3;
 }
 
+
 void Game::Play(){
   
   wclear( menuwin );
@@ -251,13 +257,20 @@ void Game::Play(){
   Aliens A1( 1., 1., 10, 4, speed, gamewin );
   Ship ship( yMaxGame, xMaxGame, gamewin );
   
+  string Info[2] = { "Quit: F1", "Score: " };
+ 
   
   while(1) {
     
     werase( gamewin );
     
     w = A1.UpdatePosition( yMaxGame, xMaxGame );
+    
     box( gamewin, 0, 0 );
+    box( infowin, 0, 0 );
+    mvwprintw( infowin, 1, 1, Info[0].c_str() );
+    mvwprintw( infowin, 1, xMaxInfo - 15, (Info[1] + to_string(Score)).c_str() );
+    
     
     switch( w ){
       
@@ -313,6 +326,8 @@ void Game::Play(){
             
             A1.AliensStatus[yindex][xindex] = 0;
             project.erase( project.begin() + i );
+            
+            Score += 100;
           }
         }
       }
@@ -323,6 +338,7 @@ void Game::Play(){
     A1.CheckAliensB();
     
     wrefresh( gamewin );
+    wrefresh( infowin );
     
     if ( ch == KEY_F(1) ) break;    
   
