@@ -14,7 +14,7 @@ int main(){
   
   Game game1(2);
   
-  game1.ShowMenu();
+  game1.Start();
   
   
   

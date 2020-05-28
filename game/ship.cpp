@@ -23,8 +23,7 @@ void Ship::print(  ){
   mvwprintw( gamewin, y+1, x-2, "ooooo");
   mvwprintw( gamewin, y+2, x-3, "ooooooo");
   mvwprintw( gamewin, y+3, x-3, " o   o ");
-  
-  //refresh();
+
 }
 
 

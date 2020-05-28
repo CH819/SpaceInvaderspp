@@ -30,16 +30,21 @@ using namespace std;
 typedef vector< Projectile > proj_vec;
 
 class Game{
+  
   public:
     Game( int );
     
-    void start();
+    void Start();
+    void Play();
     void ShowMenu();
     void PrintInitAlien( int );
     float SetDifficulty();
     
     
   private:
+    
+    string lost, won;
+    
     proj_vec project;
     
     WINDOW * menuwin;
@@ -47,5 +52,8 @@ class Game{
     
     float speed;
     
+    int yMaxSTD,  xMaxSTD;   //Max Coordinates for Std Screen
+    int yMaxMenu, xMaxMenu; //For Menu Screen
+    float yMaxGame, xMaxGame; //For Game Screen
 };
 

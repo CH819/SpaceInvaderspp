@@ -9,34 +9,49 @@ using namespace std;
 
 Game::Game( int h ){
   
+  lost = "YOU DIED!";
+  won = "YOU WON!";
   speed = 0.3;
 }
 
-void Game::ShowMenu(){
+void Game::Start(){
   
   initscr();
   noecho();
   cbreak();
   curs_set(0);
   nodelay( stdscr, 0 );
+  curs_set(FALSE);
+  //keypad( stdscr, true );
+  
+  int height = 6;
+  int width = 30;
 
+  getmaxyx( stdscr, yMaxSTD,  xMaxSTD );
 
-  int y_max, x_max;
+  menuwin = newwin( height, width, yMaxSTD/2 , (xMaxSTD - width)/2 );
+  keypad( menuwin, true );
+   
+   
+  gamewin = newwin( yMaxSTD - 2, xMaxSTD, 0, 0 );
+  keypad( gamewin, true );
+  nodelay( gamewin, 1 );
+  getmaxyx( gamewin, yMaxGame,  xMaxGame );
+  
+  ShowMenu();
+}
+
+void Game::ShowMenu(){
+  
 
   int height = 6;
   int width = 30;
 
-  getmaxyx( stdscr, y_max, x_max );
-
-  menuwin = newwin( height, width, y_max/2 , (x_max - width)/2 );
-  gamewin = newwin( y_max - 2, x_max, 0, 0 );
-  
   box( menuwin, 0, 0 );
   
-  PrintInitAlien( x_max );
+  PrintInitAlien( xMaxSTD );
   refresh();
   wrefresh( menuwin );
-  keypad( menuwin, true );
 
   int n = 3;
   string choices[n] = { "PLAY", "SET DIFFICULTY", "EXIT" };
@@ -48,16 +63,14 @@ void Game::ShowMenu(){
     
     clear();
     
-    getmaxyx( stdscr, y_max, x_max );
+    getmaxyx( stdscr, yMaxSTD, xMaxSTD );
 
     
-    //box( gamewin, 0, 0 );
     box( menuwin, 0, 0 );
     
-    PrintInitAlien( x_max );
+    PrintInitAlien( xMaxSTD );
     refresh();
     wrefresh( menuwin );
-    keypad( menuwin, true );
 
     for( int i=0; i<n; i++){
 
@@ -94,13 +107,13 @@ void Game::ShowMenu(){
 
     if( choice == 10 ){
       
-      delwin( menuwin );
+      werase( menuwin );
       clear();
       
       switch( highlight ){
         
        case 0:
-        start();
+        Play();
         break;
       
        case 1:
@@ -125,40 +138,39 @@ void Game::ShowMenu(){
 
 float Game::SetDifficulty(){
   
-  int y_max, x_max;
+  int yMaxSTD, xMaxSTD;
 
   int height = 6;
   int width = 30;
 
-  getmaxyx( stdscr, y_max, x_max );
+  getmaxyx( stdscr, yMaxSTD, xMaxSTD );
 
-  WINDOW * menuwin = newwin( height, width , y_max/2 , (x_max - width)/2 );
   box( menuwin, 0, 0 );
   
-  PrintInitAlien( x_max );
+  PrintInitAlien( xMaxSTD );
   refresh();
   wrefresh( menuwin );
-  keypad( menuwin, true );
 
   int n = 4;
   string choices[n] = { "BABY", "NERD", "80's KID WITH NO LIFE", "RETURN" };
 
   int choice;
   int highlight = 0;
-  
+ 
+
     while( 1 ){
     
     clear();
     
-    getmaxyx( stdscr, y_max, x_max );
+    getmaxyx( stdscr, yMaxSTD, xMaxSTD );
 
-    menuwin = newwin( height, width , y_max/2 , (x_max - width)/2 );
+    //menuwin = newwin( height, width , yMaxSTD/2 , (xMaxSTD - width)/2 );
     box( menuwin, 0, 0 );
     
-    PrintInitAlien( x_max );
+    PrintInitAlien( xMaxSTD );
     refresh();
     wrefresh( menuwin );
-    keypad( menuwin, true );
+    //keypad( menuwin, true );
 
     for( int i=0; i<n; i++){
 
@@ -195,7 +207,7 @@ float Game::SetDifficulty(){
 
     if( choice == 10 ){
       
-      delwin( menuwin );
+      //delwin( menuwin );
       clear();
       
       switch( highlight ){
@@ -222,38 +234,28 @@ float Game::SetDifficulty(){
       break;
     }
   }
+
   
-  
+  werase( menuwin );
   ShowMenu();
   
   return 0.3;
 }
 
-void Game::start(){
+void Game::Play(){
   
-  float max_y = 0, max_x = 0;
+  
   int ch, xindex, yindex, w;
   
-  curs_set(FALSE);
-  //raw();
-  cbreak();
-  keypad( stdscr, true );
-  nodelay( stdscr, 1 );
-  
-  getmaxyx( gamewin, max_y, max_x );
-  
   Aliens A1( 0., 0., 10, 4, speed, gamewin );
-  Ship ship( max_y, max_x, gamewin );
+  Ship ship( yMaxGame, xMaxGame, gamewin );
   
-  string lost = "YOU DIED!";
-  string won = "YOU WON!";
   
   while(1) {
     
-    //getmaxyx(stdscr, max_y, max_x);
     werase( gamewin );
     
-    w = A1.UpdatePosition( max_y, max_x );
+    w = A1.UpdatePosition( yMaxGame, xMaxGame );
     
     switch( w ){
       
@@ -263,7 +265,7 @@ void Game::start(){
      case 1:
       clear();
        
-      mvprintw( max_y/2, max_x/2, lost.c_str() );
+      mvprintw( yMaxGame/2, xMaxGame/2, lost.c_str() );
       refresh();
       usleep( 2000000 );
       
@@ -273,7 +275,7 @@ void Game::start(){
      case 2:
       clear();
        
-      mvprintw( max_y/2, max_x/2, won.c_str() );
+      mvprintw( yMaxGame/2, xMaxGame/2, won.c_str() );
       refresh();
       usleep( 2000000 );
       
@@ -283,16 +285,18 @@ void Game::start(){
     
     ship.print();
     
-    ch = getch();
+    ch = wgetch( gamewin );
     ship.action( ch, project );
     
     box( gamewin, 0, 0 );
     
     for ( int i=0; i<project.size(); i++){
+      
       project[i].print();
       project[i].move();
       
       if (project[i].y <= 0 ){
+        
           project.erase( project.begin() + i );
           break;
       }
@@ -318,13 +322,9 @@ void Game::start(){
     
     wrefresh( gamewin );
     
-    if ( ch == KEY_F(1) ) break;
-    
+    if ( ch == KEY_F(1) ) break;    
   
   }
-  
-  //endwin();
-  nodelay( stdscr, 0 );
   
   return;
 }

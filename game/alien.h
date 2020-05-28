@@ -4,7 +4,6 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include <vector>
-#include <fstream>
 
 #define ALIENH1 "     ___      "
 #define ALIENH2 " ___/   \\___ "
@@ -13,7 +12,7 @@
 
 #define DALIEN1 "              "
 
-#define LENGTH 14
+#define LENGTH 13
 #define HEIGHT 4
 
 #define DELAY 30000
@@ -52,8 +51,6 @@ class Aliens{
   WINDOW * gamewin;
   
   int N, M, LimL, LimR, LimB;
-  
-  ofstream outfile;
 };
 
 #endif

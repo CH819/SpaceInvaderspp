@@ -17,8 +17,6 @@ void Projectile::print(){
   
   mvwprintw( gamewin, y, x, "*" );
   mvwprintw( gamewin, y+1, x, "*" );
-  
-  //refresh();
 }
 
 

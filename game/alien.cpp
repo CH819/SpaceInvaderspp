@@ -26,9 +26,6 @@ Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   mat AliensStatus_init( M, vec( N, 1 ) );
   AliensStatus = AliensStatus_init;
   
-  
-  outfile.open("bottom.txt");
-  
 }
 
 int Aliens::UpdatePosition( float max_y, float max_x ){
@@ -125,7 +122,6 @@ void Aliens::CheckAliensB(){
   }
   
   LimB--;
-  outfile << LimB << endl;
   
 }
 
