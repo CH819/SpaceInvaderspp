@@ -1,6 +1,3 @@
-#include <iostream>
-#include <cmath>
-
 #include "projectile.h"
 #include "ship.h"
 #include "alien.h"
@@ -13,6 +10,8 @@ Game::Game( int h ){
   lost = "YOU DIED!";
   won = "YOU WON!";
   speed = 0.3;
+  
+  init_hiscores();
 }
 
 
@@ -25,7 +24,7 @@ void Game::Start(){
   nodelay( stdscr, 0 );
   curs_set(FALSE);
   
-  int height = 6;
+  int height = 9;
   int width = 30;
 
   getmaxyx( stdscr, yMaxSTD,  xMaxSTD );
@@ -44,6 +43,8 @@ void Game::Start(){
   infowin = newwin( 3, xMaxSTD, yMaxSTD - 3, 0 );
   getmaxyx( infowin, yMaxInfo,  xMaxInfo );
   
+  //Setting up High Score Window  
+  hswin = newwin( 3, xMaxSTD - 12, yMaxSTD/2 , 4 );
   
   ShowMenu();
 }
@@ -51,7 +52,8 @@ void Game::Start(){
 
 void Game::ShowMenu(){
   
-  int height = 6;
+
+  int height = 9;
   int width = 30;
 
   box( menuwin, 0, 0 );
@@ -60,8 +62,8 @@ void Game::ShowMenu(){
   refresh();
   wrefresh( menuwin );
 
-  int n = 3;
-  string choices[n] = { "PLAY", "SET DIFFICULTY", "EXIT" };
+  int n = 4;
+  string choices[n] = { "PLAY", "SET DIFFICULTY", "HIGH SCORES", "EXIT" };
 
   int choice;
   int highlight = 0;
@@ -87,7 +89,7 @@ void Game::ShowMenu(){
         wattron( menuwin, A_REVERSE ); //Puts selected item in negative
       }
 
-      mvwprintw( menuwin, i+1, (width - choices[i].length())/2, choices[i].c_str() );
+      mvwprintw( menuwin, 2*i+1, (width - choices[i].length())/2, choices[i].c_str() );
       wattroff( menuwin, A_REVERSE ); //Turns off the attribute change
     }
 
@@ -128,7 +130,12 @@ void Game::ShowMenu(){
         break;
         
        case 2:
-        endwin();
+         
+         show_hiscores();
+         break;
+         
+       case 3:
+        endwin(); 
         exit(1);
         break;
          
@@ -148,7 +155,7 @@ float Game::SetDifficulty(){
   
   int yMaxSTD, xMaxSTD;
 
-  int height = 6;
+  int height = 9;
   int width = 30;
 
   getmaxyx( stdscr, yMaxSTD, xMaxSTD );
@@ -326,10 +333,12 @@ void Game::Play(){
   
   srand( time(NULL) );
   
-  Aliens A1( 1., 1., 10, 4, speed, gamewin );
+  Aliens A1( 1., 1., 3, 3, speed, gamewin );
   Ship ship( yMaxGame, xMaxGame, gamewin );
   
-  string Info[2] = { "Quit: F1", "Score: " };
+
+  string Info[2] = { "Return to Menu: F1", "Score: " };
+ 
   
   while(1) {
     
@@ -382,8 +391,7 @@ void Game::Play(){
       Start();
       return;
     }
-    
-    
+        
     // Check borders of alien cluster
     A1.CheckAliensL();
     A1.CheckAliensR();
@@ -393,8 +401,8 @@ void Game::Play(){
     wrefresh( gamewin );
     wrefresh( infowin );
     
-    
-    if ( ch == KEY_F(1) ) break;
+
+    if ( ch == KEY_F(1) ) Start();    
   
   }
   
@@ -414,4 +422,97 @@ void Game::PrintInitAlien( int x ){
   }
 }
 
+void Game::show_hiscores(){
+  
+  box( menuwin, 0, 0 );
+  
+  PrintInitAlien( xMaxSTD );
+  refresh();
+  wrefresh( menuwin );
+  
 
+
+  string h = "Press Any Key to Return";
+  int i = 0;
+  for( int i=0; i<5; i++ ){
+
+    mvwprintw( menuwin, i+1, 2, names[i].c_str() );
+    mvwprintw( menuwin, i+1, 27 - scores[i].length(), scores[i].c_str() );
+  }
+  
+  wattron( menuwin, A_REVERSE );
+  mvwprintw( menuwin, 7, 3, h.c_str() );
+  wattroff( menuwin, A_REVERSE );
+  
+  wrefresh( menuwin );
+  
+  getch();
+  werase( menuwin );
+  ShowMenu();
+}
+
+void Game::init_hiscores(){
+  
+  ifstream hiscore_file( "data/hiscores.txt" );
+  int i = 0;
+  
+  while( hiscore_file >> names[i] >> scores[i] && i<4){
+    i++;
+  }
+  
+  hiscore_file.close();
+}
+
+void Game::check_score(){
+      
+  ofstream outfile;
+  
+  outfile.open( "data/hiscores.txt" );
+  
+  bool check = true;
+  int counter = 0;
+  string new_name;
+  
+  for (int i=0; i<5; i++){
+    
+    
+    if( Score>stoi(scores[i]) && check){
+      
+      new_hiscore( &new_name );
+      outfile << new_name << " " << to_string(Score) << endl;
+      check = false;
+      counter++;
+    }
+    
+    if( counter == 5 ) break;
+    
+    outfile << names[i] << " " << scores[i] << endl;
+    
+    counter++;
+  }
+  
+  outfile.close();
+}
+
+void Game::new_hiscore( string * namePTR ){
+  
+  clear();
+  echo();
+  char str[20];
+  
+  box( hswin, 0, 0 );
+  mvprintw( yMaxGame/2, xMaxGame/2 - 8, "NEW HIGH SCORE!" );
+  mvprintw( yMaxGame/2, xMaxGame/2 - 8, "Enter a name with up to 20 characters" );
+  
+  refresh();
+  wrefresh(hswin);
+  
+  mvwprintw( hswin, 1, 1, "Enter your name: " );  
+  wrefresh( hswin );
+  
+  wgetstr( hswin, str );
+  
+  string name( str );
+  
+  *namePTR = name;
+}
