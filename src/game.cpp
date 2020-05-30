@@ -310,10 +310,21 @@ void Game::check_bomb_impact( class Aliens& A1, class Ship& ship, int& w ){
 }
 
 
+void Game::generate_bomb( class Aliens& A1 ){
+  
+  //srand();
+  float number = ((double) rand() / (RAND_MAX));;
+  
+  if ( number > 0.98 ) A1.ThrowBomb( bombs );
+}
+
+
 void Game::Play(){
   
   wclear( menuwin );
   int ch, w;
+  
+  srand( time(NULL) );
   
   Aliens A1( 1., 1., 10, 4, speed, gamewin );
   Ship ship( yMaxGame, xMaxGame, gamewin );
@@ -339,20 +350,11 @@ void Game::Play(){
     //box( gamewin, 0, 0 );
     
     // Throw bomb
-    if ( time(NULL)%7 == 0 && bombs.size() == 0 ) A1.ThrowBomb( bombs );
+    generate_bomb( A1 );
     
     // Check if either cluster or player were hit
     check_projectile_impact( A1 );
     check_bomb_impact( A1, ship, w );
-    
-    // Check borders of alien cluster
-    A1.CheckAliensL();
-    A1.CheckAliensR();
-    A1.CheckAliensB();
-    
-    
-    wrefresh( gamewin );
-    wrefresh( infowin );
     
     // Check if player won, lost or neither
     switch( w ){
@@ -380,6 +382,16 @@ void Game::Play(){
       ShowMenu();
       return;
     }
+    
+    
+    // Check borders of alien cluster
+    A1.CheckAliensL();
+    A1.CheckAliensR();
+    A1.CheckAliensB();
+    
+    
+    wrefresh( gamewin );
+    wrefresh( infowin );
     
     
     if ( ch == KEY_F(1) ) break;

@@ -150,8 +150,6 @@ void Aliens::ThrowBomb( proj_vec& bombs ){
   float yindex_attack = 0;
   float xindex_attack = 0;
   
-  srand( time(NULL) );
-  
   do {
     xindex_attack = rand()%N;
     yindex_attack = rand()%M;
