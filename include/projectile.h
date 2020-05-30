@@ -12,14 +12,14 @@ class Projectile{
   friend class Game;
   
   public:
-    Projectile( int, int, float, WINDOW * );
+    Projectile( float, float, float, WINDOW * );
     void print();
     void move();
   
   private:
     float direction;
-    int max_y;
-    int y, x;
+    float max_y;
+    float y, x;
     WINDOW * gamewin;
 };
 

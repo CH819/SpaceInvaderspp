@@ -39,6 +39,8 @@ class Game{
     void ShowMenu();
     void PrintInitAlien( int );
     float SetDifficulty();
+    void check_projectile_impact( class Aliens& );
+    void check_bomb_impact( class Aliens&, class Ship&, int& w );
     
     
   private:

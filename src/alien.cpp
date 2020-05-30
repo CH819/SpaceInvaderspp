@@ -36,16 +36,13 @@ int Aliens::UpdatePosition( float max_y, float max_x ){
   
   float next_x;
   
-
   if ( LimB == 0 ) return 2;
     
   for ( float j=0; j<M; j++ ){
     for ( float i=0; i<N; i++ ){
         
         if ( AliensStatus[j][i] == 1 ) PrintAlien( Y + HEIGHT*j, XL + LENGTH*i );
-        
-        else PrintWhiteSpace( Y + HEIGHT*j, XL + LENGTH*i );
-    
+
     }
   }
   
@@ -138,6 +135,7 @@ void Aliens::PrintAlien( float y, float x ){
   mvwprintw( gamewin, y+3, x, ALIENH4 );
 }
 
+
 void Aliens::PrintWhiteSpace( float y, float x ){
 
   mvwprintw( gamewin, y+0, x, DALIEN1 );
@@ -160,11 +158,9 @@ void Aliens::ThrowBomb( proj_vec& bombs ){
   
   } while ( AliensStatus[yindex_attack][xindex_attack] != 1 );
   
-  float x_coor = XL + LENGTH*(N)/2;
+  float x_coor = (XL - LimL*LENGTH) + (xindex_attack - 1/2)*LENGTH;
+  float y_coor = Y + LimB*HEIGHT;
   
-  //Projectile bomb( HEIGHT*(yindex_attack+1), LENGTH*(xindex_attack+1)/2, -1, gamewin );
-  Projectile bomb( HEIGHT*(M)+Y + 2, x_coor, -1, gamewin );
+  Projectile bomb( y_coor, x_coor, -0.3, gamewin );
   bombs.push_back( bomb );
-  
-  cout << HEIGHT*(yindex_attack+1) << endl;
 }

@@ -128,7 +128,8 @@ void Game::ShowMenu(){
         break;
         
        case 2:
-        endwin(); 
+        endwin();
+        exit(1);
         break;
          
        default:
@@ -250,21 +251,80 @@ float Game::SetDifficulty(){
 }
 
 
+void Game::check_projectile_impact( class Aliens& A1 ){
+  
+  int xindex, yindex;
+  
+  for ( int i=0; i<project.size(); i++ ){
+    
+    project[i].print();
+    project[i].move();
+    
+    if ( project[i].y <= 0 ){
+      
+      project.erase( project.begin() + i );
+      break;
+    }
+    
+    xindex = floor((project[i].x - A1.XL)/LENGTH);
+    yindex = floor((project[i].y - A1.Y)/HEIGHT);
+    
+    if ( yindex >= 0 && yindex < A1.M ){
+      if ( xindex >= 0 && xindex < A1.N ){
+        
+        if ( A1.AliensStatus[yindex][xindex] == 1 ){
+          
+          A1.AliensStatus[yindex][xindex] = 0;
+          project.erase( project.begin() + i );
+          
+          Score += 100;
+        }
+      }
+    }
+  }
+}
+
+
+void Game::check_bomb_impact( class Aliens& A1, class Ship& ship, int& w ){
+  
+  for ( int i=0; i<bombs.size(); i++ ){
+    
+    bombs[i].print();
+    bombs[i].move();
+    
+    if ( bombs[i].y > yMaxGame ){
+      
+      bombs.erase( bombs.begin() + i );
+      break;
+    }
+    
+    if ( bombs[i].y >= (ship.y+1) && bombs[i].y <= ship.max_y ){
+      if ( bombs[i].x >= (ship.x-3) && bombs[i].x <= (ship.x+3) ){
+        
+        w = 1;
+        break;
+        
+      }
+    }
+  }
+}
+
+
 void Game::Play(){
   
   wclear( menuwin );
-  int ch, xindex, yindex, w;
+  int ch, w;
   
   Aliens A1( 1., 1., 10, 4, speed, gamewin );
   Ship ship( yMaxGame, xMaxGame, gamewin );
   
   string Info[2] = { "Quit: F1", "Score: " };
- 
   
   while(1) {
     
     werase( gamewin );
     
+    // Print and update positions
     w = A1.UpdatePosition( yMaxGame, xMaxGame );
     
     box( gamewin, 0, 0 );
@@ -272,7 +332,29 @@ void Game::Play(){
     mvwprintw( infowin, 1, 1, Info[0].c_str() );
     mvwprintw( infowin, 1, xMaxInfo - 15, (Info[1] + to_string(Score)).c_str() );
     
+    ship.print();
     
+    ch = wgetch( gamewin );
+    ship.action( ch, project );
+    //box( gamewin, 0, 0 );
+    
+    // Throw bomb
+    if ( time(NULL)%7 == 0 && bombs.size() == 0 ) A1.ThrowBomb( bombs );
+    
+    // Check if either cluster or player were hit
+    check_projectile_impact( A1 );
+    check_bomb_impact( A1, ship, w );
+    
+    // Check borders of alien cluster
+    A1.CheckAliensL();
+    A1.CheckAliensR();
+    A1.CheckAliensB();
+    
+    
+    wrefresh( gamewin );
+    wrefresh( infowin );
+    
+    // Check if player won, lost or neither
     switch( w ){
       
      case 0:
@@ -299,77 +381,6 @@ void Game::Play(){
       return;
     }
     
-    ship.print();
-    
-    ch = wgetch( gamewin );
-    ship.action( ch, project );
-    //box( gamewin, 0, 0 );
-    
-    // Throw bomb
-    if ( time(NULL)%7 == 0 && bombs.size() == 0 ) A1.ThrowBomb( bombs );
-    
-    for ( int i=0; i<project.size(); i++ ){
-      
-      project[i].print();
-      project[i].move();
-      
-      if ( project[i].y <= 0 ){
-        
-        project.erase( project.begin() + i );
-        break;
-      }
-      
-      xindex = floor((project[i].x - A1.XL)/LENGTH);
-      yindex = floor((project[i].y - A1.Y)/HEIGHT);
-      
-      if ( yindex >= 0 && yindex < A1.M ){
-        if ( xindex >= 0 && xindex < A1.N ){
-          
-          if ( A1.AliensStatus[yindex][xindex] == 1 ){
-            
-            A1.AliensStatus[yindex][xindex] = 0;
-            project.erase( project.begin() + i );
-            
-            Score += 100;
-          }
-        }
-      }
-    }
-    
-    
-    // Bombs
-    for ( int i=0; i<bombs.size(); i++ ){
-      
-      bombs[i].print();
-      bombs[i].move();
-      
-      if ( bombs[i].y > yMaxGame ){
-        
-        bombs.erase( bombs.begin() + i );
-        break;
-      }
-      
-      if ( bombs[i].y >= ship.y && bombs[i].y <= ship.max_y ){
-        if ( bombs[i].x >= (ship.x-3) && bombs[i].x <= (ship.x+3) ){
-          
-          cout << "AAAAAAAAAAAAAAAAAAAH" << endl;
-          
-          //mvprintw( yMaxGame/2, xMaxGame/2, lost.c_str() );
-          //refresh();
-          //usleep( 2000000 );
-          
-          //ShowMenu();
-          
-        }
-      }
-    }
-    
-    A1.CheckAliensL();
-    A1.CheckAliensR();
-    A1.CheckAliensB();
-    
-    wrefresh( gamewin );
-    wrefresh( infowin );
     
     if ( ch == KEY_F(1) ) break;
   
@@ -377,6 +388,7 @@ void Game::Play(){
   
   return;
 }
+
 
 void Game::PrintInitAlien( int x ){
 

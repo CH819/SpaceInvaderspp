@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Projectile::Projectile( int y_coor, int x_coor, float dir, WINDOW * win ){
+Projectile::Projectile( float y_coor, float x_coor, float dir, WINDOW * win ){
   
   x = x_coor;
   y = y_coor - 2;
