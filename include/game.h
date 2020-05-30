@@ -20,6 +20,9 @@
 #include <unistd.h>
 #include <ncurses.h>
 #include <vector>
+#include <fstream>
+#include <cmath>
+
 
 #include "projectile.h"
 #include "ship.h"
@@ -40,6 +43,12 @@ class Game{
     void PrintInitAlien( int );
     float SetDifficulty();
     
+    //High Score related functions
+    void show_hiscores();
+    void check_score();    
+    void init_hiscores();
+    void new_hiscore( string * );
+
     
   private:
     
@@ -50,6 +59,7 @@ class Game{
     WINDOW * menuwin;
     WINDOW * gamewin;
     WINDOW * infowin;
+    WINDOW * hswin;
     
     float speed;
     
@@ -59,5 +69,8 @@ class Game{
     float yMaxGame, xMaxGame; //For Game Screen
     
     int Score = 0;
+    
+    string names[5];
+    string scores[5];
 };
 
