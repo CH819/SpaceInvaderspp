@@ -369,7 +369,7 @@ void Game::Play(){
       refresh();
       usleep( 2000000 );
       
-      ShowMenu();
+      Start();
       break;
     
      case 2:
@@ -379,7 +379,7 @@ void Game::Play(){
       refresh();
       usleep( 2000000 );
       
-      ShowMenu();
+      Start();
       return;
     }
     

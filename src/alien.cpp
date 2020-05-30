@@ -156,8 +156,8 @@ void Aliens::ThrowBomb( proj_vec& bombs ){
   
   } while ( AliensStatus[yindex_attack][xindex_attack] != 1 );
   
-  float x_coor = (XL - LimL*LENGTH) + (xindex_attack - 1/2)*LENGTH;
-  float y_coor = Y + LimB*HEIGHT;
+  float x_coor = (XL - LimL*LENGTH) + (xindex_attack + 1./2.)*LENGTH;
+  float y_coor = Y + LimB*(HEIGHT+1);
   
   Projectile bomb( y_coor, x_coor, -0.3, gamewin );
   bombs.push_back( bomb );
