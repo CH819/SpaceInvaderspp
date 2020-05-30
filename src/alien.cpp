@@ -1,8 +1,12 @@
 #include <iostream>
-
-#include "alien.h"
 #include <fstream>
+#include <time.h>
+
+#include "projectile.h"
+#include "alien.h"
+
 using namespace std;
+
 
 Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   
@@ -19,7 +23,6 @@ Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   LimL = 0;
   LimR = N;
   LimB = M;
-
   
   gamewin = win;
   
@@ -27,6 +30,7 @@ Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   AliensStatus = AliensStatus_init;
   
 }
+
 
 int Aliens::UpdatePosition( float max_y, float max_x ){
   
@@ -85,10 +89,9 @@ int Aliens::UpdatePosition( float max_y, float max_x ){
     }
   }
   
-
-  
   return 0;
 }
+
 
 void Aliens::CheckAliensL(){
   
@@ -112,6 +115,7 @@ void Aliens::CheckAliensR(){
   
   LimR--;
 }
+
 
 void Aliens::CheckAliensB(){
   
@@ -140,4 +144,27 @@ void Aliens::PrintWhiteSpace( float y, float x ){
   mvwprintw( gamewin, y+1, x, DALIEN1 );
   mvwprintw( gamewin, y+2, x, DALIEN1 );
   mvwprintw( gamewin, y+3, x, DALIEN1 );
+}
+
+
+void Aliens::ThrowBomb( proj_vec& bombs ){
+  
+  float yindex_attack = 0;
+  float xindex_attack = 0;
+  
+  srand( time(NULL) );
+  
+  do {
+    xindex_attack = rand()%N;
+    yindex_attack = rand()%M;
+  
+  } while ( AliensStatus[yindex_attack][xindex_attack] != 1 );
+  
+  float x_coor = XL + LENGTH*(N)/2;
+  
+  //Projectile bomb( HEIGHT*(yindex_attack+1), LENGTH*(xindex_attack+1)/2, -1, gamewin );
+  Projectile bomb( HEIGHT*(M)+Y + 2, x_coor, -1, gamewin );
+  bombs.push_back( bomb );
+  
+  cout << HEIGHT*(yindex_attack+1) << endl;
 }

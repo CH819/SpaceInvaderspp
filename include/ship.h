@@ -13,6 +13,7 @@ using namespace std;
 typedef vector< Projectile > proj_vec;
 
 class Ship{
+  friend class Game;
   
   public:
     Ship( float, float, WINDOW * );

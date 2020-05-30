@@ -15,6 +15,7 @@ Game::Game( int h ){
   speed = 0.3;
 }
 
+
 void Game::Start(){
   
   initscr();
@@ -47,9 +48,9 @@ void Game::Start(){
   ShowMenu();
 }
 
+
 void Game::ShowMenu(){
   
-
   int height = 6;
   int width = 30;
 
@@ -140,6 +141,7 @@ void Game::ShowMenu(){
   
   endwin();
 }
+
 
 float Game::SetDifficulty(){
   
@@ -298,21 +300,23 @@ void Game::Play(){
     }
     
     ship.print();
-        
+    
     ch = wgetch( gamewin );
     ship.action( ch, project );
     //box( gamewin, 0, 0 );
-
     
-    for ( int i=0; i<project.size(); i++){
+    // Throw bomb
+    if ( time(NULL)%7 == 0 && bombs.size() == 0 ) A1.ThrowBomb( bombs );
+    
+    for ( int i=0; i<project.size(); i++ ){
       
       project[i].print();
       project[i].move();
       
-      if (project[i].y <= 0 ){
+      if ( project[i].y <= 0 ){
         
-          project.erase( project.begin() + i );
-          break;
+        project.erase( project.begin() + i );
+        break;
       }
       
       xindex = floor((project[i].x - A1.XL)/LENGTH);
@@ -332,6 +336,34 @@ void Game::Play(){
       }
     }
     
+    
+    // Bombs
+    for ( int i=0; i<bombs.size(); i++ ){
+      
+      bombs[i].print();
+      bombs[i].move();
+      
+      if ( bombs[i].y > yMaxGame ){
+        
+        bombs.erase( bombs.begin() + i );
+        break;
+      }
+      
+      if ( bombs[i].y >= ship.y && bombs[i].y <= ship.max_y ){
+        if ( bombs[i].x >= (ship.x-3) && bombs[i].x <= (ship.x+3) ){
+          
+          cout << "AAAAAAAAAAAAAAAAAAAH" << endl;
+          
+          //mvprintw( yMaxGame/2, xMaxGame/2, lost.c_str() );
+          //refresh();
+          //usleep( 2000000 );
+          
+          //ShowMenu();
+          
+        }
+      }
+    }
+    
     A1.CheckAliensL();
     A1.CheckAliensR();
     A1.CheckAliensB();
@@ -339,7 +371,7 @@ void Game::Play(){
     wrefresh( gamewin );
     wrefresh( infowin );
     
-    if ( ch == KEY_F(1) ) break;    
+    if ( ch == KEY_F(1) ) break;
   
   }
   

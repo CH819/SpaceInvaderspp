@@ -12,12 +12,12 @@ class Projectile{
   friend class Game;
   
   public:
-    Projectile( int, int, WINDOW * );
+    Projectile( int, int, float, WINDOW * );
     void print();
     void move();
   
   private:
-    int direction = 1;
+    float direction;
     int max_y;
     int y, x;
     WINDOW * gamewin;

@@ -45,7 +45,8 @@ class Game{
     
     string lost, won;
     
-    proj_vec project;
+    proj_vec project; //Shot by player
+    proj_vec bombs; // Shot by aliens
     
     WINDOW * menuwin;
     WINDOW * gamewin;

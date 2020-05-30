@@ -41,7 +41,7 @@ void Ship::action( int ch, proj_vec& project ){
     
     case KEY_UP:
       if (project.size() < 3){
-        Projectile proj( y, x, gamewin );
+        Projectile proj( y, x, 1, gamewin );
         project.push_back( proj );
       }
       
