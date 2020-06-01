@@ -150,14 +150,34 @@ void Aliens::ThrowBomb( proj_vec& bombs ){
   float yindex_attack = 0;
   float xindex_attack = 0;
   
+  /*
   do {
     xindex_attack = rand()%N;
-    yindex_attack = rand()%M;
+    //yindex_attack = rand()%M;
   
   } while ( AliensStatus[yindex_attack][xindex_attack] != 1 );
+  */
   
-  float x_coor = (XL - LimL*LENGTH) + (xindex_attack + 1./2.)*LENGTH;
-  float y_coor = Y + (LimB+1)*(HEIGHT);
+  do {
+    
+    xindex_attack = rand()%N;
+    
+    for (int i=(M-1); i>=0; i--){
+      
+      yindex_attack = i;
+      
+      if ( AliensStatus[yindex_attack][xindex_attack] == 1 ) break;
+      
+    }
+    
+    
+  } while ( AliensStatus[yindex_attack][xindex_attack] != 1 );
+  
+  
+  float x_coor = XL + (xindex_attack + 0.5)*LENGTH;
+  //float x_coor = (XL - LimL*LENGTH) + (xindex_attack + 0.5)*LENGTH;
+  float y_coor = Y + (M - 1 + yindex_attack)*HEIGHT;
+  //float y_coor = Y + (LimB+1)*(HEIGHT);
   
   Projectile bomb( y_coor, x_coor, -0.3, gamewin );
   bombs.push_back( bomb );
