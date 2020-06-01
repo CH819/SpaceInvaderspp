@@ -333,7 +333,7 @@ void Game::Play(){
   
   srand( time(NULL) );
   
-  Aliens A1( 1., 1., 3, 3, speed, gamewin );
+  Aliens A1( 1., 1., 4, 4, speed, gamewin );
   Ship ship( yMaxGame, xMaxGame, gamewin );
   
 
