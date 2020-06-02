@@ -308,6 +308,8 @@ void Game::check_bomb_impact( class Aliens& A1, class Ship& ship, int& w ){
     if ( bombs[i].y >= (ship.y+1) && bombs[i].y <= ship.max_y ){
       if ( bombs[i].x >= (ship.x-3) && bombs[i].x <= (ship.x+3) ){
         
+        bombs.clear();
+        
         w = 1;
         break;
         
