@@ -192,7 +192,6 @@ float Game::SetDifficulty(){
 
   int choice;
   int highlight = 0;
- 
 
     while( 1 ){
     
@@ -208,7 +207,7 @@ float Game::SetDifficulty(){
     wrefresh( menuwin );
     //keypad( menuwin, true );
 
-    for( int i=0; i<n; i++){
+    for( int i=0; i<n; i++ ){
 
       if( i == highlight ){
 
@@ -250,14 +249,17 @@ float Game::SetDifficulty(){
         
        case 0:
         speed = 0.3;
+        bomb_threshold = 98;
         break;
       
        case 1:
         speed = 0.5;
+        bomb_threshold = 97;
         break;
         
        case 2:
-        speed = 1; 
+        speed = 1;
+        bomb_threshold = 96;
         break;
         
        case 3:
@@ -342,10 +344,10 @@ void Game::check_bomb_impact( class Aliens& A1, class Ship& ship, int& w ){
 
 void Game::generate_bomb( class Aliens& A1 ){
   
-  //srand();
-  float number = ((double) rand() / (RAND_MAX));;
+  //float number = ((double) rand() / (RAND_MAX));;
+  int number = rand()%100;;
   
-  if ( number > 0.98 ) A1.ThrowBomb( bombs );
+  if ( number > bomb_threshold ) A1.ThrowBomb( bombs );
 }
 
 

@@ -66,6 +66,7 @@ class Game{
     WINDOW * hswin;
     
     float speed;
+    float bomb_threshold = 98;
     
     int yMaxSTD,  xMaxSTD;   //Max Coordinates for Std Screen
     int yMaxMenu, xMaxMenu; //For Menu Screen
