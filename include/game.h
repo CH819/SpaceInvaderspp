@@ -38,6 +38,7 @@ class Game{
     Game( int );
     
     void Start();
+    void start_game_window();
     void Play();
     void ShowMenu();
     void PrintInitAlien( int );

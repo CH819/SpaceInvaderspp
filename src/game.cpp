@@ -32,7 +32,16 @@ void Game::Start(){
   //Setting up Menu Window
   menuwin = newwin( height, width, yMaxSTD/2 , (xMaxSTD - width)/2 );
   keypad( menuwin, true );
-   
+  
+  //Setting up High Score Window  
+  hswin = newwin( 3, xMaxSTD - 12, yMaxSTD/2 , 4 );
+  
+  ShowMenu();
+}
+
+
+void Game::start_game_window(){
+  
   //Setting up Game Window 
   gamewin = newwin( yMaxSTD - 2, xMaxSTD, 0, 0 );
   keypad( gamewin, true );
@@ -42,11 +51,6 @@ void Game::Start(){
   //Setting up Info Window
   infowin = newwin( 3, xMaxSTD, yMaxSTD - 3, 0 );
   getmaxyx( infowin, yMaxInfo,  xMaxInfo );
-  
-  //Setting up High Score Window  
-  hswin = newwin( 3, xMaxSTD - 12, yMaxSTD/2 , 4 );
-  
-  ShowMenu();
 }
 
 
@@ -332,6 +336,8 @@ void Game::Play(){
   
   wclear( menuwin );
   int ch, w;
+  
+  start_game_window();
   
   srand( time(NULL) );
   
