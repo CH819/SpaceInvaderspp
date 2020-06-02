@@ -8,8 +8,7 @@ using namespace std;
 Game::Game( int h ){
   
   lost = "YOU DIED!";
-  won = "YOU WON!";
-  speed = 0.3;
+  won = "NEXT WAVE";
   
   init_hiscores();
   init_logo();
@@ -49,7 +48,10 @@ void Game::Start(){
   curs_set(0);
   nodelay( stdscr, 0 );
   curs_set(FALSE);
-  
+
+  Score = 0;
+  speed = 0.3;
+
   int height = 9;
   int width = 30;
   
@@ -406,7 +408,8 @@ void Game::Play(){
       mvprintw( yMaxGame/2, xMaxGame/2, lost.c_str() );
       refresh();
       usleep( 2000000 );
-      
+
+      check_score();
       Start();
       break;
     
@@ -417,7 +420,9 @@ void Game::Play(){
       refresh();
       usleep( 2000000 );
       
-      Start();
+      speed += 0.2;
+
+      Play();
       return;
     }
         
@@ -517,6 +522,8 @@ void Game::check_score(){
   }
   
   outfile.close();
+
+  init_hiscores();
 }
 
 void Game::new_hiscore( string * namePTR ){
@@ -540,6 +547,8 @@ void Game::new_hiscore( string * namePTR ){
   string name( str );
   
   *namePTR = name;
+
+  return;
 }
 
 void Game::init_logo(){
