@@ -15,6 +15,28 @@ Game::Game( int h ){
 }
 
 
+void Game::begin(){
+  
+  initscr();
+  raw();
+  keypad( stdscr, true );
+  noecho();
+  
+  int ch;
+  
+  mvprintw( 1, 1, "For the correct experiente, please maximize this window");
+  
+  refresh();
+  
+  ch = getch();
+  
+  getch();
+  endwin();
+  
+  Start();
+}
+
+
 void Game::Start(){
   
   initscr();
@@ -26,21 +48,12 @@ void Game::Start(){
   
   int height = 9;
   int width = 30;
-
-  getmaxyx( stdscr, yMaxSTD,  xMaxSTD );
-
+  
+  getmaxyx( stdscr, yMaxSTD, xMaxSTD );
+  
   //Setting up Menu Window
   menuwin = newwin( height, width, yMaxSTD/2 , (xMaxSTD - width)/2 );
   keypad( menuwin, true );
-  
-  //Setting up High Score Window  
-  hswin = newwin( 3, xMaxSTD - 12, yMaxSTD/2 , 4 );
-  
-  ShowMenu();
-}
-
-
-void Game::start_game_window(){
   
   //Setting up Game Window 
   gamewin = newwin( yMaxSTD - 2, xMaxSTD, 0, 0 );
@@ -51,11 +64,15 @@ void Game::start_game_window(){
   //Setting up Info Window
   infowin = newwin( 3, xMaxSTD, yMaxSTD - 3, 0 );
   getmaxyx( infowin, yMaxInfo,  xMaxInfo );
+  
+  //Setting up High Score Window  
+  hswin = newwin( 3, xMaxSTD - 12, yMaxSTD/2 , 4 );
+  
+  ShowMenu();
 }
 
 
 void Game::ShowMenu(){
-  
 
   int height = 9;
   int width = 30;
@@ -337,8 +354,6 @@ void Game::Play(){
   wclear( menuwin );
   int ch, w;
   
-  start_game_window();
-  
   srand( time(NULL) );
   
   Aliens A1( 1., 1., 4, 4, speed, gamewin );
@@ -410,7 +425,7 @@ void Game::Play(){
     wrefresh( infowin );
     
 
-    if ( ch == KEY_F(1) ) Start();    
+    if ( ch == KEY_F(1) ) Start();
   
   }
   

@@ -23,7 +23,6 @@
 #include <fstream>
 #include <cmath>
 
-
 #include "projectile.h"
 #include "ship.h"
 #include "alien.h"
@@ -38,7 +37,7 @@ class Game{
     Game( int );
     
     void Start();
-    void start_game_window();
+    void begin();
     void Play();
     void ShowMenu();
     void PrintInitAlien( int );
@@ -48,15 +47,12 @@ class Game{
     void check_bomb_impact( class Aliens&, class Ship&, int& w );
     void generate_bomb( class Aliens& );
 
-    
     //High Score related functions
     void show_hiscores();
     void check_score();    
     void init_hiscores();
     void new_hiscore( string * );
 
-
-    
   private:
     
     string lost, won;
