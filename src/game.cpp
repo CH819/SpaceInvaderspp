@@ -24,13 +24,16 @@ void Game::begin(){
   
   int ch;
   
-  mvprintw( 1, 1, "For the correct experiente, please maximize this window");
+  mvprintw( 0, 1, "For the correct experiente, please maximize this window");
+  mvprintw( 1, 1, "After that, press F3");
   
   refresh();
   
-  ch = getch();
+  while (1){
+    ch = getch();
+    if ( ch == KEY_F(3) ) break;
+  }
   
-  getch();
   endwin();
   
   Start();
