@@ -12,6 +12,7 @@ Game::Game( int h ){
   speed = 0.3;
   
   init_hiscores();
+  init_logo();
 }
 
 
@@ -440,13 +441,9 @@ void Game::Play(){
 
 void Game::PrintInitAlien( int x ){
 
-  string InitAlien[] = { AMenu1, AMenu2, AMenu3, AMenu4, AMenu5, AMenu6, AMenu7,
-                         AMenu8, AMenu9, AMenu10, AMenu11, AMenu12, AMenu13,
-                         AMenu14, AMenu15, AMenu16, AMenu17 };
+  for( unsigned int i=0; i<alien_logo.size(); i++ ){
 
-  for( int i=0; i<17; i++ ){
-
-    mvprintw( i, x/2 - InitAlien[i].length()/2, InitAlien[i].c_str() );
+    mvprintw( i, x/2 - alien_logo[i].length()/2, alien_logo[i].c_str() );
   }
 }
 
@@ -543,4 +540,21 @@ void Game::new_hiscore( string * namePTR ){
   string name( str );
   
   *namePTR = name;
+}
+
+void Game::init_logo(){
+
+  ifstream infile( "data/logos/alien_menu.txt" );
+
+  if ( infile.fail() )   
+    {
+      cout << "Your alien_menu.txt file is missing!" << endl;
+      exit( 1 );
+    }
+
+  string line;
+  while( getline( infile, line ) ){
+
+    alien_logo.push_back( line );
+  }
 }

@@ -14,15 +14,22 @@ Ship::Ship( float maxy, float maxx, WINDOW * win ){
   x = max_x/2;
   y = max_y - 5;
   gamewin = win;
+
+  init_logo();
 }
 
 
 void Ship::print(  ){
   
-  mvwprintw( gamewin, y, x, "o");
+ /*  mvwprintw( gamewin, y, x, "o");
   mvwprintw( gamewin, y+1, x-2, "ooooo");
   mvwprintw( gamewin, y+2, x-3, "ooooooo");
   mvwprintw( gamewin, y+3, x-3, " o   o ");
+   */
+  for( unsigned int i=0; i<ship_logo.size(); i++){
+
+    mvwprintw( gamewin, y+i, x, ship_logo[i].c_str() );
+  }
 
 }
 
@@ -47,5 +54,22 @@ void Ship::action( int ch, proj_vec& project ){
       
       break;
     
+  }
+}
+
+void Ship::init_logo(){
+
+  ifstream infile( "data/logos/ship.txt" );
+
+  if ( infile.fail() )   
+    {
+      cout << "Your ship.txt file is missing!" << endl;
+      exit( 1 );
+    }
+
+  string line;
+  while( getline( infile, line ) ){
+
+    ship_logo.push_back( line );
   }
 }

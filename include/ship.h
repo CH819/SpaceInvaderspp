@@ -5,6 +5,7 @@
 #include <ncurses.h>
 #include <unistd.h>
 #include <vector>
+#include <fstream>
 
 #include "projectile.h"
 
@@ -19,12 +20,15 @@ class Ship{
     Ship( float, float, WINDOW * );
     void print();
     void action( int, proj_vec& );
+    void init_logo();
   
   private:
     int direction = 1;
     int max_y;
     int max_x;
     int y, x;
+
+    vector< string > ship_logo;
     
     WINDOW * gamewin;
 };

@@ -1,21 +1,3 @@
-#define AMenu1  "                _____                "
-#define AMenu2  "             ,-\"     \"-.             "
-#define AMenu3  "            / o       o \\            "
-#define AMenu4  "           /   \\     /   \\           "
-#define AMenu5  "          /     )-\"-(     \\          "
-#define AMenu6  "         /     ( 6 6 )     \\         "
-#define AMenu7  "        /       \\ \" /       \\        "
-#define AMenu8  "       /         )=(         \\       "
-#define AMenu9  "      /   o   .--\"-\"--.   o   \\      "
-#define AMenu10 "     /    I  /  -   -  \\  I    \\     "
-#define AMenu11 " .--(    (_}y/\\       /\\y{_)    )--. "
-#define AMenu12 "(    \".___l\\/__\\_____/__\\/l___,\"    )"
-#define AMenu13 " \\                                 / "
-#define AMenu14 "  \"-._      o O o O o O o      _,-\"  "
-#define AMenu15 "      `--Y--.___________.--Y--'      "
-#define AMenu16 "         |==.___________.==| hjw     "
-#define AMenu17 "         `==.___________.==' `97     "
-
 #include <iostream>
 #include <unistd.h>
 #include <ncurses.h>
@@ -42,6 +24,7 @@ class Game{
     void ShowMenu();
     void PrintInitAlien( int );
     float SetDifficulty();
+    void init_logo();
 
     void check_projectile_impact( class Aliens& );
     void check_bomb_impact( class Aliens&, class Ship&, int& w );
@@ -75,6 +58,8 @@ class Game{
     
     int Score = 0;
     
+    vector< string > alien_logo;
+
     string names[5];
     string scores[5];
 };

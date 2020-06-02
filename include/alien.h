@@ -5,11 +5,6 @@
 #include <ncurses.h>
 #include <vector>
 
-#define ALIENH1 "     ___      "
-#define ALIENH2 " ___/   \\___ "
-#define ALIENH3 "/   '---'   \\"
-#define ALIENH4 "'--_______--' "
-
 #define DALIEN1 "              "
 
 #define LENGTH 13
@@ -45,6 +40,8 @@ class Aliens{
   
   void ThrowBomb( proj_vec& );
 
+  void init_logo();
+
  private:
   
   float XL, XR; //Horizontal positions: Left and Right
@@ -52,6 +49,8 @@ class Aliens{
   float direction;
   mat AliensStatus;
   
+  vector< string > alien_logo;
+
   WINDOW * gamewin;
   
   int N, M, LimL, LimR, LimB;

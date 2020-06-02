@@ -27,8 +27,9 @@ Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   gamewin = win;
   
   mat AliensStatus_init( M, vec( N, 1 ) );
-  AliensStatus = AliensStatus_init;
-  
+  AliensStatus = AliensStatus_init; 
+
+  init_logo();
 }
 
 
@@ -129,10 +130,10 @@ void Aliens::CheckAliensB(){
 
 void Aliens::PrintAlien( float y, float x ){
 
-  mvwprintw( gamewin, y+0, x, ALIENH1 );
-  mvwprintw( gamewin, y+1, x, ALIENH2 );
-  mvwprintw( gamewin, y+2, x, ALIENH3 );
-  mvwprintw( gamewin, y+3, x, ALIENH4 );
+  for( unsigned int i=0; i<alien_logo.size(); i++){
+
+    mvwprintw( gamewin, y+i, x, alien_logo[i].c_str() );
+  }
 }
 
 
@@ -169,4 +170,21 @@ void Aliens::ThrowBomb( proj_vec& bombs ){
   
   Projectile bomb( y_coor, x_coor, -0.3, gamewin );
   bombs.push_back( bomb );
+}
+
+void Aliens::init_logo(){
+
+  ifstream infile( "data/logos/alien.txt" );
+
+  if ( infile.fail() )   
+    {
+      cout << "Your alien.txt file is missing!" << endl;
+      exit( 1 );
+    }
+
+  string line;
+  while( getline( infile, line ) ){
+
+    alien_logo.push_back( line );
+  }
 }
