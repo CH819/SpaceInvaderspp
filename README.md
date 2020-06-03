@@ -1,34 +1,57 @@
 # SpaceInvaderspp
-Proyecto Final de Física Computacional 2 - 2020
 
 ## Contributors:
 Carolina Herrera Segura, David Silva Sánchez
 
 ## Project structure
 ```
-. FiniteElementMethod
+. SpaceInvaderspp
 ├── Makefile
-├── examples
-|  ├── Integration example
-|  └── Linear Equation Solver example
 ├── include
 │  └── headers
 ├── src
-|   └── Finite Element Method Solver
-├── tools
-|   ├── Integration Methods
-|   └── Linear Algebra Methods
+|   └── Space Invaders game
 ├── data
-|   ├── input
-|   |   ├── data_triangles.txt
-|   |   ├── nodes.txt
-|   |   └── parameters.txt
-|   └── results 
-|       ├── gamma_results.txt
-|       ├── N_coef_results.txt
-|       └── data_eval.txt
+|   └── hiscores.txt
 └──extras  
-    ├── images
-    |   └──IntSurface.png
-    └── DataVisualization.ipynb
+    └── images
 ```
+
+## About the game
+
+Space Invader is an arcade game created by Toshihiro Nishikado and released in 1978.
+
+A cluter of aliens moves horizontally and each time it hits the border of the screen it moves down one line. The player moves horizontally and shoots projectiles vertically.
+
+The objective of the game is to kill all the aliens before they reach the player.
+
+
+## Requirements
+
+This game uses the ncurses library, version 6.3. To install it, run the command that matches the distribution you are using.
+
+
+* For Ubuntu:
+
+``` apt-get install libncurses6-dev libncursesw6-dev ```
+
+* For Arch:
+
+``` pacman -S ncurses ```
+
+You can also follow the instructions given in [the official ncurses documentation](https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/intro.html#WHERETOGETIT).
+
+
+## Installation
+
+1. Clone the original repository.
+
+``` git clone https://github.com/CH819/SpaceInvaderspp.git```
+
+2. Open a terminal in the cloned repository and run
+
+``` make ```
+
+3. Run the compiled file ```play```.
+
+``` ./play```
