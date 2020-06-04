@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 Game::Game( int h ){
   
   lost = "YOU DIED!";
@@ -17,6 +18,7 @@ Game::Game( int h ){
 
 void Game::begin(){
   
+  // Setting up ncurses
   initscr();
   raw();
   keypad( stdscr, true );
@@ -24,11 +26,13 @@ void Game::begin(){
   
   int ch;
   
+  // Starting message asking to maximize window
   mvprintw( 0, 1, "For the correct experience, please maximize this window");
   mvprintw( 1, 1, "After that, press F3");
   
   refresh();
   
+  // Press F3 to continue
   while (1){
     ch = getch();
     if ( ch == KEY_F(3) ) break;
@@ -45,7 +49,7 @@ void Game::start(){
   //Setting up ncurses
   initscr(); //Initializes the main window
   noecho();  //Don't echo inputs from the user
-  cbreak();  
+  cbreak();
   curs_set(0);
   nodelay( stdscr, 0 );
   curs_set(FALSE);
@@ -287,7 +291,6 @@ float Game::set_difficulty(){
       break;
     }
   }
-
   
   werase( menuwin );
   show_menu();
@@ -305,6 +308,7 @@ void Game::check_projectile_impact( class Aliens& A1 ){
     project[i].print();
     project[i].move();
     
+    // If projectile is out of bounds, erase from vector
     if ( project[i].y <= 0 ){
       
       project.erase( project.begin() + i );
@@ -314,6 +318,7 @@ void Game::check_projectile_impact( class Aliens& A1 ){
     xindex = floor((project[i].x - A1.XL)/LENGTH);
     yindex = floor((project[i].y - A1.Y)/HEIGHT);
     
+    // If projectile hits an alien, mark it as dead and erase from vector
     if ( yindex >= 0 && yindex < A1.M ){
       if ( xindex >= 0 && xindex < A1.N ){
         
@@ -337,12 +342,14 @@ void Game::check_bomb_impact( class Aliens& A1, class Ship& ship, int& w ){
     bombs[i].print();
     bombs[i].move();
     
+    // If bomb is out of bounds, erase from vector
     if ( bombs[i].y > y_max_game ){
       
       bombs.erase( bombs.begin() + i );
       break;
     }
     
+    // If bomb hits player, the player loses
     if ( bombs[i].y >= (ship.y+1) && bombs[i].y <= ship.max_y ){
       if ( bombs[i].x >= (ship.x-3) && bombs[i].x <= (ship.x+3) ){
         
@@ -359,7 +366,6 @@ void Game::check_bomb_impact( class Aliens& A1, class Ship& ship, int& w ){
 
 void Game::generate_bomb( class Aliens& A1 ){
   
-  //float number = ((double) rand() / (RAND_MAX));;
   int number = rand()%100;;
   
   if ( number > bomb_threshold ) A1.throw_bomb( bombs );
@@ -464,6 +470,7 @@ void Game::play(){
 }
 
 
+// Print menu alien
 void Game::print_init_alien( int x ){
 
   for( unsigned int i=0; i<alien_logo.size(); i++ ){

@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 Ship::Ship( float maxy, float maxx, WINDOW * win ){
   
   max_x = maxx;
@@ -19,18 +20,8 @@ Ship::Ship( float maxy, float maxx, WINDOW * win ){
 }
 
 
-void Ship::print(  ){
-  /* 
-  mvwprintw( gamewin, y, x, "o");
-  mvwprintw( gamewin, y+1, x-2, "ooooo");
-  mvwprintw( gamewin, y+2, x-3, "ooooooo");
-  mvwprintw( gamewin, y+3, x-3, " o   o ");
-   */
-  /* mvwprintw( gamewin, y,   x-3, ship_logo[0].c_str());
-  mvwprintw( gamewin, y+1, x-3, ship_logo[1].c_str());
-  mvwprintw( gamewin, y+2, x-3, ship_logo[2].c_str());
-  mvwprintw( gamewin, y+3, x-3, ship_logo[3].c_str());
-   */
+void Ship::print(){
+
   for( unsigned int i=0; i<ship_logo.size(); i++){
 
     mvwprintw( gamewin, y+i, x-3, ship_logo[i].c_str() );
@@ -42,14 +33,17 @@ void Ship::action( int ch, proj_vec& project ){
   
   switch( ch ){
     
+    // Move to the right (if not on border of screen)
     case KEY_RIGHT:
       if ( x+6 <= max_x ) x += direction;
       break;
     
+    // Move to the left (if not on border of screen)
     case KEY_LEFT:
       if ( x-5 >= 0 ) x -= direction;
       break;
     
+    // Shoot projectile
     case KEY_UP:
       if ( project.size() < 3 ){
         Projectile proj( y, x, 0.8, gamewin );
@@ -61,6 +55,8 @@ void Ship::action( int ch, proj_vec& project ){
   }
 }
 
+
+// Load ship data
 void Ship::init_logo(){
 
   ifstream infile( "data/logos/ship.txt" );
@@ -76,4 +72,6 @@ void Ship::init_logo(){
 
     ship_logo.push_back( line );
   }
+  
+  infile.close();
 }
