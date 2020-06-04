@@ -19,11 +19,11 @@ Carolina Herrera Segura, David Silva Sánchez
 
 ## About the game
 
-Space Invader is an arcade game created by Toshihiro Nishikado and released in 1978.
+Space Invaders is an arcade game created by Toshihiro Nishikado and released in 1978.
 
-A cluter of aliens moves horizontally and each time it hits the border of the screen it moves down one line. The player moves horizontally and shoots projectiles vertically.
+A cluster of aliens moves horizontally and each time it hits the border of the screen it moves down one line. The player moves horizontally and shoots projectiles vertically.
 
-The objective of the game is to kill all the aliens before they reach the player.
+The objective of the game is to kill all the aliens before they reach the player. The player loses if the aliens reach them or if they are hit by a projectile.
 
 
 ## Requirements
