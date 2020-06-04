@@ -530,7 +530,7 @@ void Game::new_hiscore( string * namePTR ){
   
   clear();
   echo();
-  char str[20];
+  char str[40];
   
   box( hswin, 0, 0 );
   mvprintw( y_max_game/2, x_max_game/2 - 8, "NEW HIGH SCORE!" );
