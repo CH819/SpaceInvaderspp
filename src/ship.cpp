@@ -20,17 +20,21 @@ Ship::Ship( float maxy, float maxx, WINDOW * win ){
 
 
 void Ship::print(  ){
-  
- /*  mvwprintw( gamewin, y, x, "o");
+  /* 
+  mvwprintw( gamewin, y, x, "o");
   mvwprintw( gamewin, y+1, x-2, "ooooo");
   mvwprintw( gamewin, y+2, x-3, "ooooooo");
   mvwprintw( gamewin, y+3, x-3, " o   o ");
    */
+  /* mvwprintw( gamewin, y,   x-3, ship_logo[0].c_str());
+  mvwprintw( gamewin, y+1, x-3, ship_logo[1].c_str());
+  mvwprintw( gamewin, y+2, x-3, ship_logo[2].c_str());
+  mvwprintw( gamewin, y+3, x-3, ship_logo[3].c_str());
+   */
   for( unsigned int i=0; i<ship_logo.size(); i++){
 
-    mvwprintw( gamewin, y+i, x, ship_logo[i].c_str() );
+    mvwprintw( gamewin, y+i, x-3, ship_logo[i].c_str() );
   }
-
 }
 
 
