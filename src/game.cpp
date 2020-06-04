@@ -24,7 +24,7 @@ void Game::begin(){
   
   int ch;
   
-  mvprintw( 0, 1, "For the correct experiente, please maximize this window");
+  mvprintw( 0, 1, "For the correct experience, please maximize this window");
   mvprintw( 1, 1, "After that, press F3");
   
   refresh();
