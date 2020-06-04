@@ -517,32 +517,33 @@ void Game::init_hiscores(){
 
 void Game::check_score(){
       
-  ofstream outfile;
-  
-  outfile.open( "data/hiscores.txt" );
-  
   bool check = true;
   int counter = 0;
   string new_name;
   
-  for (int i=0; i<5; i++){
+  for( int i=0; i<5; i++ ){
     
-    
-    if( Score>stoi(scores[i]) && check){
+    if( Score>stoi(scores[i]) ){
       
       new_hiscore( &new_name );
-      outfile << new_name << " " << to_string(Score) << endl;
-      check = false;
-      counter++;
+      scores[i] = Score;
+      names[i] = new_name;
+      break;
     }
-    
-    if( counter == 5 ) break;
-    
-    outfile << names[i] << " " << scores[i] << endl;
-    
-    counter++;
   }
+
+  ofstream outfile;
   
+  outfile.open( "data/hiscores.txt" );
+
+  if( sizeof(names) == 5 ){
+    
+    for( int i=0; i<5; i++ ){
+
+    outfile << names[i] << " " << scores[i] << endl;
+    }
+  }  
+
   outfile.close();
 
   init_hiscores();
