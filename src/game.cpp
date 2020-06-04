@@ -526,7 +526,7 @@ void Game::check_score(){
     if( Score>stoi(scores[i]) ){
       
       new_hiscore( &new_name );
-      scores[i] = Score;
+      scores[i] = to_string(Score);
       names[i] = new_name;
       break;
     }
@@ -535,14 +535,12 @@ void Game::check_score(){
   ofstream outfile;
   
   outfile.open( "data/hiscores.txt" );
-
-  if( sizeof(names) == 5 ){
-    
-    for( int i=0; i<5; i++ ){
+ 
+  for( int i=0; i<5; i++ ){
 
     outfile << names[i] << " " << scores[i] << endl;
-    }
-  }  
+  }
+ 
 
   outfile.close();
 
