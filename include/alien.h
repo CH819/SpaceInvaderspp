@@ -29,16 +29,16 @@ class Aliens{
   //~Aliens( );
   
   //void GetXPosition( float* );
-  int UpdatePosition( float, float );
+  int update_position( float, float );
   
-  void PrintAlien( float, float );
-  void PrintWhiteSpace( float, float );
+  void print_alien( float, float );
+  void print_white_space( float, float );
   
-  void CheckAliensL(); //Left
-  void CheckAliensR(); //Right
-  void CheckAliensB(); //Bottom
+  void check_aliens_L(); //Left
+  void check_aliens_R(); //Right
+  void check_aliens_B(); //Bottom
   
-  void ThrowBomb( proj_vec& );
+  void throw_bomb( proj_vec& );
 
   void init_logo();
 
@@ -47,13 +47,13 @@ class Aliens{
   float XL, XR; //Horizontal positions: Left and Right
   float Y; //Vertical position of upper part
   float direction;
-  mat AliensStatus;
+  mat aliens_status;
   
   vector< string > alien_logo;
 
   WINDOW * gamewin;
   
-  int N, M, LimL, LimR, LimB;
+  int N, M, lim_l, lim_r, lim_b;
 };
 
 #endif

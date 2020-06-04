@@ -18,12 +18,12 @@ class Game{
   public:
     Game( int );
     
-    void Start();
+    void start();
     void begin();
-    void Play();
-    void ShowMenu();
-    void PrintInitAlien( int );
-    float SetDifficulty();
+    void play();
+    void show_menu();
+    void print_init_alien( int );
+    float set_difficulty();
     void init_logo();
 
     void check_projectile_impact( class Aliens& );
@@ -51,10 +51,10 @@ class Game{
     float speed;
     float bomb_threshold = 98;
     
-    int yMaxSTD,  xMaxSTD;   //Max Coordinates for Std Screen
-    int yMaxMenu, xMaxMenu; //For Menu Screen
-    int yMaxInfo, xMaxInfo; //For Info Screen
-    float yMaxGame, xMaxGame; //For Game Screen
+    int y_max_std,  x_max_std;   //Max Coordinates for Std Screen
+    int y_max_menu, x_max_menu; //For Menu Screen
+    int y_max_info, x_max_info; //For Info Screen
+    float y_max_game, x_max_game; //For Game Screen
     
     int Score = 0;
     

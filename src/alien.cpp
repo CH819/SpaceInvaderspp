@@ -20,29 +20,29 @@ Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   N = n; //Number of columns
   M = m; //Number of rows
   
-  LimL = 0;
-  LimR = N;
-  LimB = M;
+  lim_l = 0;
+  lim_r = N;
+  lim_b = M;
   
   gamewin = win;
   
-  mat AliensStatus_init( M, vec( N, 1 ) );
-  AliensStatus = AliensStatus_init; 
+  mat aliens_status_init( M, vec( N, 1 ) );
+  aliens_status = aliens_status_init; 
 
   init_logo();
 }
 
 
-int Aliens::UpdatePosition( float max_y, float max_x ){
+int Aliens::update_position( float max_y, float max_x ){
   
   float next_x;
   
-  if ( LimB == 0 ) return 2;
+  if ( lim_b == 0 ) return 2;
     
   for ( float j=0; j<M; j++ ){
     for ( float i=0; i<N; i++ ){
         
-        if ( AliensStatus[j][i] == 1 ) PrintAlien( Y + HEIGHT*j, XL + LENGTH*i );
+        if ( aliens_status[j][i] == 1 ) print_alien( Y + HEIGHT*j, XL + LENGTH*i );
 
     }
   }
@@ -53,12 +53,12 @@ int Aliens::UpdatePosition( float max_y, float max_x ){
     
     next_x = XR + direction;
     
-    if( next_x  >= max_x - (LimR-1)*LENGTH  ){
+    if( next_x  >= max_x - (lim_r-1)*LENGTH  ){
       
       direction *=-1;
       Y++;
       
-      if( Y + LimB*HEIGHT >= max_y - 4) return 1;
+      if( Y + lim_b*HEIGHT >= max_y - 4) return 1;
     }
     
     else{
@@ -72,12 +72,12 @@ int Aliens::UpdatePosition( float max_y, float max_x ){
     
     next_x = XL + direction;
     
-    if( next_x < LimL*LENGTH + 1){
+    if( next_x < lim_l*LENGTH + 1){
       
       direction *= -1;
       Y++;
       
-      if( Y + LimB*HEIGHT >= max_y - 4) return 1;
+      if( Y + lim_b*HEIGHT >= max_y - 4) return 1;
     }
     
     else{
@@ -91,44 +91,44 @@ int Aliens::UpdatePosition( float max_y, float max_x ){
 }
 
 
-void Aliens::CheckAliensL(){
+void Aliens::check_aliens_L(){
   
   for( int i=0; i<M; i++ ){
     
 
-    if ( AliensStatus[i][-LimL] == 1 ) return;
+    if ( aliens_status[i][-lim_l] == 1 ) return;
   }
   
-  LimL--;
+  lim_l--;
   
 }
 
 
-void Aliens::CheckAliensR(){
+void Aliens::check_aliens_R(){
   
   for( int i=0; i<M; i++ ){
     
-    if ( AliensStatus[i][LimR-1] == 1 ) return;
+    if ( aliens_status[i][lim_r-1] == 1 ) return;
   }
   
-  LimR--;
+  lim_r--;
 }
 
 
-void Aliens::CheckAliensB(){
+void Aliens::check_aliens_B(){
   
   for( int i=0; i<N; i++ ){
     
 
-    if ( AliensStatus[LimB-1][i] == 1 ) return;;
+    if ( aliens_status[lim_b-1][i] == 1 ) return;;
   }
   
-  LimB--;
+  lim_b--;
   
 }
 
 
-void Aliens::PrintAlien( float y, float x ){
+void Aliens::print_alien( float y, float x ){
 
   for( unsigned int i=0; i<alien_logo.size(); i++){
 
@@ -137,7 +137,7 @@ void Aliens::PrintAlien( float y, float x ){
 }
 
 
-void Aliens::PrintWhiteSpace( float y, float x ){
+void Aliens::print_white_space( float y, float x ){
 
   mvwprintw( gamewin, y+0, x, DALIEN1 );
   mvwprintw( gamewin, y+1, x, DALIEN1 );
@@ -146,7 +146,7 @@ void Aliens::PrintWhiteSpace( float y, float x ){
 }
 
 
-void Aliens::ThrowBomb( proj_vec& bombs ){
+void Aliens::throw_bomb( proj_vec& bombs ){
   
   float yindex_attack = 0;
   float xindex_attack = 0;
@@ -159,10 +159,10 @@ void Aliens::ThrowBomb( proj_vec& bombs ){
       
       yindex_attack = i;
       
-      if ( AliensStatus[yindex_attack][xindex_attack] == 1 ) break;
+      if ( aliens_status[yindex_attack][xindex_attack] == 1 ) break;
     }
   
-  } while ( AliensStatus[yindex_attack][xindex_attack] != 1 );
+  } while ( aliens_status[yindex_attack][xindex_attack] != 1 );
   
   
   float x_coor = XL + (xindex_attack + 0.5)*LENGTH;

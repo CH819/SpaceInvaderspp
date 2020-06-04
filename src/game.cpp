@@ -36,11 +36,11 @@ void Game::begin(){
   
   endwin();
   
-  Start();
+  start();
 }
 
 
-void Game::Start(){
+void Game::start(){
   
   initscr();
   noecho();
@@ -52,40 +52,40 @@ void Game::Start(){
   Score = 0;
   speed = 0.3;
 
-  int height = 9;
-  int width = 30;
+  static int height = 9;
+  static int width = 30;
   
-  getmaxyx( stdscr, yMaxSTD, xMaxSTD );
+  getmaxyx( stdscr, y_max_std, x_max_std );
   
   //Setting up Menu Window
-  menuwin = newwin( height, width, yMaxSTD/2 , (xMaxSTD - width)/2 );
+  menuwin = newwin( height, width, y_max_std/2 , (x_max_std - width)/2 );
   keypad( menuwin, true );
   
   //Setting up Game Window 
-  gamewin = newwin( yMaxSTD - 2, xMaxSTD, 0, 0 );
+  gamewin = newwin( y_max_std - 2, x_max_std, 0, 0 );
   keypad( gamewin, true );
   nodelay( gamewin, 1 );
-  getmaxyx( gamewin, yMaxGame,  xMaxGame );
+  getmaxyx( gamewin, y_max_game,  x_max_game );
   
   //Setting up Info Window
-  infowin = newwin( 3, xMaxSTD, yMaxSTD - 3, 0 );
-  getmaxyx( infowin, yMaxInfo,  xMaxInfo );
+  infowin = newwin( 3, x_max_std, y_max_std - 3, 0 );
+  getmaxyx( infowin, y_max_info,  x_max_info );
   
   //Setting up High Score Window  
-  hswin = newwin( 3, xMaxSTD - 12, yMaxSTD/2 , 4 );
+  hswin = newwin( 3, x_max_std - 12, y_max_std/2 , 4 );
   
-  ShowMenu();
+  show_menu();
 }
 
 
-void Game::ShowMenu(){
+void Game::show_menu(){
 
-  int height = 9;
-  int width = 30;
+  static int height = 9;
+  static int width = 30;
 
   box( menuwin, 0, 0 );
   
-  PrintInitAlien( xMaxSTD );
+  print_init_alien( x_max_std );
   refresh();
   wrefresh( menuwin );
 
@@ -99,12 +99,12 @@ void Game::ShowMenu(){
     
     clear();
     
-    getmaxyx( stdscr, yMaxSTD, xMaxSTD );
+    getmaxyx( stdscr, y_max_std, x_max_std );
 
     
     box( menuwin, 0, 0 );
     
-    PrintInitAlien( xMaxSTD );
+    print_init_alien( x_max_std );
     refresh();
     wrefresh( menuwin );
 
@@ -149,11 +149,11 @@ void Game::ShowMenu(){
       switch( highlight ){
         
        case 0:
-        Play();
+        play();
         break;
       
        case 1:
-        SetDifficulty();
+        set_difficulty();
         break;
         
        case 2:
@@ -178,18 +178,18 @@ void Game::ShowMenu(){
 }
 
 
-float Game::SetDifficulty(){
+float Game::set_difficulty(){
   
-  int yMaxSTD, xMaxSTD;
+  int y_max_std, x_max_std;
 
   int height = 9;
   int width = 30;
 
-  getmaxyx( stdscr, yMaxSTD, xMaxSTD );
+  getmaxyx( stdscr, y_max_std, x_max_std );
 
   box( menuwin, 0, 0 );
   
-  PrintInitAlien( xMaxSTD );
+  print_init_alien( x_max_std );
   refresh();
   wrefresh( menuwin );
 
@@ -203,12 +203,12 @@ float Game::SetDifficulty(){
     
     clear();
     
-    getmaxyx( stdscr, yMaxSTD, xMaxSTD );
+    getmaxyx( stdscr, y_max_std, x_max_std );
 
-    //menuwin = newwin( height, width , yMaxSTD/2 , (xMaxSTD - width)/2 );
+    //menuwin = newwin( height, width , y_max_std/2 , (x_max_std - width)/2 );
     box( menuwin, 0, 0 );
     
-    PrintInitAlien( xMaxSTD );
+    print_init_alien( x_max_std );
     refresh();
     wrefresh( menuwin );
     //keypad( menuwin, true );
@@ -221,7 +221,7 @@ float Game::SetDifficulty(){
         wattron( menuwin, A_REVERSE ); //Puts selected item in negative
       }
 
-      mvwprintw( menuwin, i+1, (width - choices[i].length())/2, choices[i].c_str() );
+      mvwprintw( menuwin, i*2+1, (width - choices[i].length())/2, choices[i].c_str() );
       wattroff( menuwin, A_REVERSE ); //Turns off the attribute change
     }
 
@@ -281,7 +281,7 @@ float Game::SetDifficulty(){
 
   
   werase( menuwin );
-  ShowMenu();
+  show_menu();
   
   return 0.3;
 }
@@ -308,9 +308,9 @@ void Game::check_projectile_impact( class Aliens& A1 ){
     if ( yindex >= 0 && yindex < A1.M ){
       if ( xindex >= 0 && xindex < A1.N ){
         
-        if ( A1.AliensStatus[yindex][xindex] == 1 ){
+        if ( A1.aliens_status[yindex][xindex] == 1 ){
           
-          A1.AliensStatus[yindex][xindex] = 0;
+          A1.aliens_status[yindex][xindex] = 0;
           project.erase( project.begin() + i );
           
           Score += 100;
@@ -328,7 +328,7 @@ void Game::check_bomb_impact( class Aliens& A1, class Ship& ship, int& w ){
     bombs[i].print();
     bombs[i].move();
     
-    if ( bombs[i].y > yMaxGame ){
+    if ( bombs[i].y > y_max_game ){
       
       bombs.erase( bombs.begin() + i );
       break;
@@ -353,11 +353,11 @@ void Game::generate_bomb( class Aliens& A1 ){
   //float number = ((double) rand() / (RAND_MAX));;
   int number = rand()%100;;
   
-  if ( number > bomb_threshold ) A1.ThrowBomb( bombs );
+  if ( number > bomb_threshold ) A1.throw_bomb( bombs );
 }
 
 
-void Game::Play(){
+void Game::play(){
   
   wclear( menuwin );
   int ch, w;
@@ -365,7 +365,7 @@ void Game::Play(){
   srand( time(NULL) );
   
   Aliens A1( 1., 1., 4, 4, speed, gamewin );
-  Ship ship( yMaxGame, xMaxGame, gamewin );
+  Ship ship( y_max_game, x_max_game, gamewin );
   
 
   string Info[2] = { "Return to Menu: F1", "Score: " };
@@ -376,12 +376,12 @@ void Game::Play(){
     werase( gamewin );
     
     // Print and update positions
-    w = A1.UpdatePosition( yMaxGame, xMaxGame );
+    w = A1.update_position( y_max_game, x_max_game );
     
     box( gamewin, 0, 0 );
     box( infowin, 0, 0 );
     mvwprintw( infowin, 1, 1, Info[0].c_str() );
-    mvwprintw( infowin, 1, xMaxInfo - 15, (Info[1] + to_string(Score)).c_str() );
+    mvwprintw( infowin, 1, x_max_info - 15, (Info[1] + to_string(Score)).c_str() );
     
     ship.print();
     
@@ -405,38 +405,38 @@ void Game::Play(){
      case 1:
       clear();
        
-      mvprintw( yMaxGame/2, xMaxGame/2, lost.c_str() );
+      mvprintw( y_max_game/2, x_max_game/2, lost.c_str() );
       refresh();
       usleep( 2000000 );
 
       check_score();
-      Start();
+      start();
       break;
     
      case 2:
       clear();
        
-      mvprintw( yMaxGame/2, xMaxGame/2, won.c_str() );
+      mvprintw( y_max_game/2, x_max_game/2, won.c_str() );
       refresh();
       usleep( 2000000 );
       
       speed += 0.2;
 
-      Play();
+      play();
       return;
     }
         
     // Check borders of alien cluster
-    A1.CheckAliensL();
-    A1.CheckAliensR();
-    A1.CheckAliensB();
+    A1.check_aliens_L();
+    A1.check_aliens_R();
+    A1.check_aliens_B();
     
     
     wrefresh( gamewin );
     wrefresh( infowin );
     
 
-    if ( ch == KEY_F(1) ) Start();
+    if ( ch == KEY_F(1) ) start();
   
   }
   
@@ -444,7 +444,7 @@ void Game::Play(){
 }
 
 
-void Game::PrintInitAlien( int x ){
+void Game::print_init_alien( int x ){
 
   for( unsigned int i=0; i<alien_logo.size(); i++ ){
 
@@ -456,7 +456,7 @@ void Game::show_hiscores(){
   
   box( menuwin, 0, 0 );
   
-  PrintInitAlien( xMaxSTD );
+  print_init_alien( x_max_std );
   refresh();
   wrefresh( menuwin );
   
@@ -478,7 +478,7 @@ void Game::show_hiscores(){
   
   getch();
   werase( menuwin );
-  ShowMenu();
+  show_menu();
 }
 
 void Game::init_hiscores(){
@@ -533,8 +533,8 @@ void Game::new_hiscore( string * namePTR ){
   char str[20];
   
   box( hswin, 0, 0 );
-  mvprintw( yMaxGame/2, xMaxGame/2 - 8, "NEW HIGH SCORE!" );
-  mvprintw( yMaxGame/2, xMaxGame/2 - 8, "Enter a name with up to 20 characters" );
+  mvprintw( y_max_game/2, x_max_game/2 - 8, "NEW HIGH SCORE!" );
+  mvprintw( y_max_game/2, x_max_game/2 - 8, "Enter a name with up to 20 characters" );
   
   refresh();
   wrefresh(hswin);
