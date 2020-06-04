@@ -534,7 +534,7 @@ void Game::new_hiscore( string * namePTR ){
   
   box( hswin, 0, 0 );
   mvprintw( y_max_game/2, x_max_game/2 - 8, "NEW HIGH SCORE!" );
-  mvprintw( y_max_game/2, x_max_game/2 - 8, "Enter a name with up to 20 characters" );
+  mvprintw( y_max_game/2, x_max_game/2 - 8, "Enter a name with up to 20 characters with no spaces and no special characters" );
   
   refresh();
   wrefresh(hswin);
