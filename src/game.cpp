@@ -42,20 +42,23 @@ void Game::begin(){
 
 void Game::start(){
   
-  initscr();
-  noecho();
-  cbreak();
+  //Setting up ncurses
+  initscr(); //Initializes the main window
+  noecho();  //Don't echo inputs from the user
+  cbreak();  
   curs_set(0);
   nodelay( stdscr, 0 );
   curs_set(FALSE);
 
-  Score = 0;
-  speed = 0.3;
+  Score = 0; //Initial Score
+  speed = 0.3; //Default speed
 
-  static int height = 9;
+  //Variables for the Menu
+  static int height = 9; 
   static int width = 30;
-  
-  getmaxyx( stdscr, y_max_std, x_max_std );
+
+  //Get max number of rows and columbs from main window
+  getmaxyx( stdscr, y_max_std, x_max_std ); 
   
   //Setting up Menu Window
   menuwin = newwin( height, width, y_max_std/2 , (x_max_std - width)/2 );
@@ -83,6 +86,7 @@ void Game::show_menu(){
   static int height = 9;
   static int width = 30;
 
+  //Prints a box around the window
   box( menuwin, 0, 0 );
   
   print_init_alien( x_max_std );
@@ -90,6 +94,8 @@ void Game::show_menu(){
   wrefresh( menuwin );
 
   int n = 4;
+
+  //Options for the menu
   string choices[n] = { "PLAY", "SET DIFFICULTY", "HIGH SCORES", "EXIT" };
 
   int choice;
@@ -99,8 +105,8 @@ void Game::show_menu(){
     
     clear();
     
+    //If the user changes the size of the screen, then the values update
     getmaxyx( stdscr, y_max_std, x_max_std );
-
     
     box( menuwin, 0, 0 );
     
@@ -122,18 +128,19 @@ void Game::show_menu(){
 
     choice = wgetch( menuwin );
 
+    //Comparing strings as ints using their ascii value
     switch( choice ){
 
     case KEY_UP:
       highlight--;
-      if( highlight == -1 ) highlight = 0;
+      if( highlight == -1 ) highlight = 0; //so it can't go down indefenitely
 
       break;
 
     case KEY_DOWN:
       highlight++;
+      if( highlight == n ) highlight = n-1; //So it can go up indefenitely
 
-      if( highlight == n ) highlight = n-1;
       break;
 
     default:
@@ -141,11 +148,13 @@ void Game::show_menu(){
 
     }
 
+    //10 is equivalent to an enter
     if( choice == 10 ){
       
       werase( menuwin );
       clear();
       
+      //Using the highlighet item as the choice
       switch( highlight ){
         
        case 0:
@@ -177,7 +186,7 @@ void Game::show_menu(){
   endwin();
 }
 
-
+//The comments for this function are the same as the ones for show_menu()
 float Game::set_difficulty(){
   
   int y_max_std, x_max_std;
@@ -359,15 +368,17 @@ void Game::generate_bomb( class Aliens& A1 ){
 
 void Game::play(){
   
+  //Clears the menu
   wclear( menuwin );
   int ch, w;
   
   srand( time(NULL) );
   
+  //Creating our aliens and our ship
   Aliens A1( 1., 1., 4, 4, speed, gamewin );
   Ship ship( y_max_game, x_max_game, gamewin );
   
-
+  //Options for infowin
   string Info[2] = { "Return to Menu: F1", "Score: " };
  
   
@@ -378,11 +389,14 @@ void Game::play(){
     // Print and update positions
     w = A1.update_position( y_max_game, x_max_game );
     
+    //reprint boxes
     box( gamewin, 0, 0 );
     box( infowin, 0, 0 );
+    //reprint messages
     mvwprintw( infowin, 1, 1, Info[0].c_str() );
     mvwprintw( infowin, 1, x_max_info - 15, (Info[1] + to_string(Score)).c_str() );
     
+    //Print ship
     ship.print();
     
     ch = wgetch( gamewin );
@@ -431,11 +445,11 @@ void Game::play(){
     A1.check_aliens_R();
     A1.check_aliens_B();
     
-    
+    //Erase what's in the windows 
     wrefresh( gamewin );
     wrefresh( infowin );
     
-
+    //re-starts the program
     if ( ch == KEY_F(1) ) start();
   
   }
@@ -483,13 +497,21 @@ void Game::show_hiscores(){
 
 void Game::init_hiscores(){
   
+  //Fills names and scores with high scores data
   ifstream hiscore_file( "data/hiscores.txt" );
   int i = 0;
   
+  if ( hiscore_file.fail() )   
+    {
+      cout << "Your hiscore.txt file is missing!" << endl;
+      exit( 1 );
+    }
+
   while( hiscore_file >> names[i] >> scores[i] && i<4){
     i++;
   }
   
+  //Closes the file
   hiscore_file.close();
 }
 
@@ -529,7 +551,9 @@ void Game::check_score(){
 void Game::new_hiscore( string * namePTR ){
   
   clear();
-  echo();
+  echo(); //So you can see what you're typing
+
+  //ncurses is written in C, so a string doesn't work
   char str[40];
   
   box( hswin, 0, 0 );
@@ -542,8 +566,10 @@ void Game::new_hiscore( string * namePTR ){
   mvwprintw( hswin, 1, 1, "Enter your name: " );  
   wrefresh( hswin );
   
+  //Fill str by reference
   wgetstr( hswin, str );
   
+  //create a string using std::string::string( *char )
   string name( str );
   
   *namePTR = name;
@@ -551,6 +577,8 @@ void Game::new_hiscore( string * namePTR ){
   return;
 }
 
+
+//Fill alien_logo
 void Game::init_logo(){
 
   ifstream infile( "data/logos/alien_menu.txt" );
@@ -566,4 +594,6 @@ void Game::init_logo(){
 
     alien_logo.push_back( line );
   }
+
+  infile.close();
 }

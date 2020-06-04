@@ -20,16 +20,16 @@ Aliens::Aliens( float y, float x, int n, int m, float dir, WINDOW * win ){
   N = n; //Number of columns
   M = m; //Number of rows
   
-  lim_l = 0;
-  lim_r = N;
-  lim_b = M;
+  lim_l = 0; //Index of alien that defines the left limit
+  lim_r = N; //Index of alien that defines the right limit
+  lim_b = M; //Index of alien that defines the bottom
   
-  gamewin = win;
+  gamewin = win; 
   
   mat aliens_status_init( M, vec( N, 1 ) );
   aliens_status = aliens_status_init; 
 
-  init_logo();
+  init_logo(); //Fills alien_logo
 }
 
 
@@ -37,32 +37,37 @@ int Aliens::update_position( float max_y, float max_x ){
   
   float next_x;
   
-  if ( lim_b == 0 ) return 2;
+  if ( lim_b == 0 ) return 2; //If this limit is zero, then the player won
     
   for ( float j=0; j<M; j++ ){
     for ( float i=0; i<N; i++ ){
-        
+
+         //If the alien is alive, then it prints it
         if ( aliens_status[j][i] == 1 ) print_alien( Y + HEIGHT*j, XL + LENGTH*i );
 
     }
   }
   
-  usleep( DELAY );
+  usleep( DELAY ); //So the game doesnt't uses 100% of the processor
   
   if ( direction > 0 ){
     
     next_x = XR + direction;
     
-    if( next_x  >= max_x - (lim_r-1)*LENGTH  ){
+    //If the most-right alien touches the right border of the window
+    if( next_x  >= max_x - (lim_r-1)*LENGTH  ){ 
       
-      direction *=-1;
-      Y++;
       
-      if( Y + lim_b*HEIGHT >= max_y - 4) return 1;
+      direction *=-1; //Change direction
+      Y++;            //Go down
+      
+      //If it touches the player
+      if( Y + lim_b*HEIGHT >= max_y - 4) return 1; //Lose
     }
     
     else{
       
+      //Just move the aliens right or left
       XR += direction;
       XL += direction;
     }
@@ -72,10 +77,11 @@ int Aliens::update_position( float max_y, float max_x ){
     
     next_x = XL + direction;
     
-    if( next_x < lim_l*LENGTH + 1){
+    //If the most-left alien touches the left border
+    if( next_x < lim_l*LENGTH + 1){ //
       
-      direction *= -1;
-      Y++;
+      direction *= -1; //Change direction
+      Y++;             // and go down
       
       if( Y + lim_b*HEIGHT >= max_y - 4) return 1;
     }
@@ -90,7 +96,9 @@ int Aliens::update_position( float max_y, float max_x ){
   return 0;
 }
 
-
+/*The next three functions check if the left or right columns, or the bottom row
+  have zero aliens, if that's the case then they change the corresponding limit
+*/
 void Aliens::check_aliens_L(){
   
   for( int i=0; i<M; i++ ){
@@ -127,7 +135,7 @@ void Aliens::check_aliens_B(){
   
 }
 
-
+//Prints an alien
 void Aliens::print_alien( float y, float x ){
 
   for( unsigned int i=0; i<alien_logo.size(); i++){
@@ -136,13 +144,13 @@ void Aliens::print_alien( float y, float x ){
   }
 }
 
-
+//Prints a white space instead of an alien
 void Aliens::print_white_space( float y, float x ){
 
-  mvwprintw( gamewin, y+0, x, DALIEN1 );
-  mvwprintw( gamewin, y+1, x, DALIEN1 );
-  mvwprintw( gamewin, y+2, x, DALIEN1 );
-  mvwprintw( gamewin, y+3, x, DALIEN1 );
+  for( unsigned int i=0; i<alien_logo.size(); i++){
+
+    mvwprintw( gamewin, y+i, x, DALIEN1 );
+  }
 }
 
 
@@ -172,6 +180,7 @@ void Aliens::throw_bomb( proj_vec& bombs ){
   bombs.push_back( bomb );
 }
 
+//Initializes the list that contains the alien logo
 void Aliens::init_logo(){
 
   ifstream infile( "data/logos/alien.txt" );
@@ -187,4 +196,6 @@ void Aliens::init_logo(){
 
     alien_logo.push_back( line );
   }
+
+  infile.close();
 }
