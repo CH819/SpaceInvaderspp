@@ -56,11 +56,12 @@ class Game{
     int y_max_info, x_max_info; //For Info Screen
     float y_max_game, x_max_game; //For Game Screen
     
-    int Score = 0;
+    int Score;
     
     vector< string > alien_logo;
 
-    string names[5];
-    string scores[5];
+    //high score information
+    string names[5];  //Names that appear in the high scores
+    string scores[5]; //Scores that appear in the high scores
 };
 
