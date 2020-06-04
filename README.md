@@ -12,9 +12,10 @@ Carolina Herrera Segura, David Silva Sánchez
 ├── src
 |   └── Space Invaders game
 ├── data
-|   └── hiscores.txt
-└──extras  
-    └── images
+|   ├── hiscores.txt
+|   └── logos
+└──extras 
+
 ```
 
 ## About the game
@@ -33,13 +34,13 @@ This game uses the ncurses library, version 6.3. To install it, run the command 
 
 * For Ubuntu:
 
-``` apt-get install libncurses6-dev libncursesw6-dev ```
+``` apt-get install libncurses5-dev libncursesw5-dev ```
 
 * For Arch:
 
 ``` pacman -S ncurses ```
 
-You can also follow the instructions given in [the official ncurses documentation](https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/intro.html#WHERETOGETIT).
+You can also follow the instructions given in [this ncurses documentation](https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/intro.html#WHERETOGETIT).
 
 
 ## Installation
