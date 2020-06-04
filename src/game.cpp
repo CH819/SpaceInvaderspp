@@ -422,7 +422,10 @@ void Game::play(){
       mvprintw( y_max_game/2, x_max_game/2, lost.c_str() );
       refresh();
       usleep( 2000000 );
-
+      
+      project.clear();
+      bombs.clear();
+      
       check_score();
       start();
       break;
@@ -433,6 +436,9 @@ void Game::play(){
       mvprintw( y_max_game/2, x_max_game/2, won.c_str() );
       refresh();
       usleep( 2000000 );
+      
+      project.clear();
+      bombs.clear();
       
       speed += 0.2;
 
@@ -466,6 +472,7 @@ void Game::print_init_alien( int x ){
   }
 }
 
+
 void Game::show_hiscores(){
   
   box( menuwin, 0, 0 );
@@ -473,8 +480,6 @@ void Game::show_hiscores(){
   print_init_alien( x_max_std );
   refresh();
   wrefresh( menuwin );
-  
-
 
   string h = "Press Any Key to Return";
   int i = 0;
@@ -495,6 +500,7 @@ void Game::show_hiscores(){
   show_menu();
 }
 
+
 void Game::init_hiscores(){
   
   //Fills names and scores with high scores data
@@ -514,6 +520,7 @@ void Game::init_hiscores(){
   //Closes the file
   hiscore_file.close();
 }
+
 
 void Game::check_score(){
       
@@ -546,6 +553,7 @@ void Game::check_score(){
 
   init_hiscores();
 }
+
 
 void Game::new_hiscore( string * namePTR ){
   
