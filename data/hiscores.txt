@@ -1,5 +1,5 @@
 TheLegend27 100000
 K 5400
 terry 4000
-Vadd 3000
+computacional2 3200
 Tom 300

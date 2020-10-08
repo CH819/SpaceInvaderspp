@@ -457,7 +457,7 @@ void Game::play(){
     A1.check_aliens_R();
     A1.check_aliens_B();
     
-    //Erase what's in the windows 
+    //Refresh game and info windows 
     wrefresh( gamewin );
     wrefresh( infowin );
     
